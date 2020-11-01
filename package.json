@@ -4,7 +4,8 @@
   "description": "A thorntree forum archiver and searcher",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"index": "./dev/indexer.sh > data/forums.csv"
   },
   "repository": {
     "type": "git",
