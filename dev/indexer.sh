@@ -12,6 +12,12 @@ indexDate=$( curl -Ls $webpage )
 forums=$( echo $indexDate | filterByRegex 'href="\/thorntree\/forums\/([^>%]+)">' )
 #echo $forums
 
+#	102,285 total pages
+#  ~1,022,850 threads
+#	0.98618s per page
+#  ~11 days download time
+
+
 for page in $forums; do
 	pageData=$( curl -Ls ${webpage}$page )
 	name=$( echo $pageData | filterByRegex '<h1 class="copy--h1">([^>]+)<\/h1>' | sed 's/&amp;/and/g' | tr -d ',' )
