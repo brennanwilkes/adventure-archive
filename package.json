@@ -4,7 +4,7 @@
   "description": "A thorntree forum archiver and searcher",
   "main": "server.js",
   "scripts": {
-	"test": "./dev/rootIndex.sh | head -n5 | ./dev/subIndexController.sh",
+	"test": "./dev/rootIndex.sh | head -n1 | ./dev/subIndexController.sh",
 	"rootIndex": "./dev/rootIndex.sh > data/forums.csv",
 	"speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
   },
