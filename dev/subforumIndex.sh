@@ -9,7 +9,9 @@ numPages=$( echo $rootData | cut -d',' -f4 )
 
 for page in $(seq $numPages); do
 	threads=$( curl -Ls "${rootPage}${forum}?page=${page}" | grep -o 'href="[^"]*"' | grep -v '[#?:]' | sed -n -e "s/^.*href=\"\/thorntree\/forums\/$forumEscaped\///p" | sed 's/"//g' | grep -v '^topics/new$' )
-	echo $threads | xargs -n1
+	for path in $threads; do
+		echo ${rootPage},${forum},${path},${rootName}
+	done;
 done;
 
 exit 0

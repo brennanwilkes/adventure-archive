@@ -8,8 +8,8 @@ filterByRegex(){
 
 
 webpage="https://www.lonelyplanet.com/thorntree/forums/"
-indexDate=$( curl -Ls $webpage )
-forums=$( echo $indexDate | filterByRegex 'href="\/thorntree\/forums\/([^>%]+)">' )
+forums=$( curl -Ls $webpage )
+forums=$( echo $forums | filterByRegex 'href="\/thorntree\/forums\/([^>%]+)">' )
 #echo $forums
 
 #	102,285 total pages
