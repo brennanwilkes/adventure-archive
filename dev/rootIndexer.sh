@@ -16,7 +16,8 @@ forums=$( echo $indexDate | filterByRegex 'href="\/thorntree\/forums\/([^>%]+)">
 #  ~1,022,850 threads
 #	0.98618s per page
 #  ~11 days download time
-
+#	0.301611s
+#  ~85 hours
 
 for page in $forums; do
 	pageData=$( curl -Ls ${webpage}$page )
