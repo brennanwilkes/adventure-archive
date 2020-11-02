@@ -4,10 +4,10 @@
   "description": "A thorntree forum archiver and searcher",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./dev/rootIndex.sh | head -n1 | ./dev/subforumIndex.sh | head",
 	"rootIndex": "./dev/rootIndex.sh > data/forums.csv",
 	"subIndex": "./data/subIndexController.sh",
-	"fullIndex": "./dev/rootIndex.sh | ./data/subIndexController.sh"
+	"fullIndex": "./dev/rootIndex.sh | ./dev/subIndexController.sh",
 	"speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
   },
   "repository": {
