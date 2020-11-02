@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-	"index": "./dev/rootIndexer.sh > data/forums.csv",
+	"rootIndex": "./dev/rootIndex.sh > data/forums.csv",
+	"subIndex": "./data/subIndexController.sh",
+	"fullIndex": "./dev/rootIndex.sh | ./data/subIndexController.sh"
 	"speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
   },
   "repository": {
