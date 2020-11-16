@@ -10,14 +10,6 @@ filterByRegex(){
 webpage="https://www.lonelyplanet.com/thorntree/forums/"
 forums=$( curl -Ls $webpage )
 forums=$( echo $forums | filterByRegex 'href="\/thorntree\/forums\/([^>%]+)">' )
-#echo $forums
-
-#	102,285 total pages
-#  ~1,022,850 threads
-#	0.98618s per page
-#  ~11 days download time
-#	0.301611s
-#  ~85 hours
 
 for page in $forums; do
 	pageData=$( curl -Ls ${webpage}$page )

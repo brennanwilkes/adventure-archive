@@ -6,10 +6,6 @@ filterByRegex(){
 	done
 }
 
-execMongo(){
-	mongo --quiet "mongodb+srv://cluster0.vwlck.mongodb.net/adventure-archive" --username brennan-cli -p DKdg40fjPyDzlnbk --eval "$1" | grep -v '^20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9] I NETWORK'
-}
-
 hash(){
 	inputContent=""
 	while read line; do
@@ -35,7 +31,6 @@ delimOutput(){
 	echo "$output"
 }
 
-#read threadData
 threadData="$1"
 
 rootURL=$( echo $threadData | cut -d',' -f1 )
@@ -49,17 +44,13 @@ fullURL=${rootURL}${subforum}/topics/${thread}/compact?
 
 threadID=$( echo "${thread}${fullURL}" | hash )
 
-#echo "$fullURL"
-
 pageData=$( curl -Ls $fullURL )
 pageTitle=$( echo $pageData | filterByRegex '<h1 class=\"topic__title copy--h1\">([^<]+)<\/h1>' | sed 's/&amp;/and/g' )
 countryName=$( echo "$pageData" | filterByRegex '<small class=\"breadcrumbs\">([^<]+)<' | rev | cut -d'/' -f1 | rev | sed 's/&amp;/and/g' )
 
-#mongoUserQuery="db.users.bulkWrite(["
-
 #https://www.lonelyplanet.com/thorntree/forums/africa/topics/africa-branch-faq/compact?
 ##Posts
- while IFS= read -r post; do
+while IFS= read -r post; do
 	post=$( echo $post | tr '^' '\n' )
 
 	user=$( echo $post | filterByRegex 'post__info__username\">([^<]+)<\/presenter>' )
@@ -73,23 +64,8 @@ countryName=$( echo "$pageData" | filterByRegex '<small class=\"breadcrumbs\">([
 	[ -z "$position" ] && position="0"
 	position=$( echo $position )
 
-
-
-	#mongoUserQuery="${mongoUserQuery}{updateOne:{filter:{_id:0x$userId},update:{name:\"$user\"},upsert: true}},"
-
-	#execMongo "db.comments.update({_id:0x$commentId},{user:0x$userId,date:\"$time\",position:\"$position\",content:\"$contentStripped\"},{upsert: true})"
-	#break
-	#14:33 UTC 08 Mar 2006
 	delimOutput "$forumName" "$countryName" "$pageTitle" "$threadID" "$commentId" "$userId" "$user" "$time" "$position" "$contentStripped"
 
-	#echo $user $time $position
 done <<<$(echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?(?=<\/tr>)')
-
-
-#mongoUserQuery=$( echo "$mongoUserQuery" | rev | cut -c2- | rev )
-#mongoUserQuery=${mongoUserQuery}"])"
-#execMongo "$mongoUserQuery"
-
-
 
 exit 0
