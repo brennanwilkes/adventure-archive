@@ -44,6 +44,8 @@ countryEx=$( echo $threadData | cut -d',' -f2 | rev | cut -d'/' -f1 | rev )
 forumName=$( echo $threadData | cut -d',' -f4 )
 fullURL=${rootURL}${subforum}/topics/${thread}/compact?
 
+threadID=$( echo "${thread}${fullURL}" | hash | rmDelim )
+
 #echo "$fullURL"
 
 pageData=$( curl -Ls $fullURL )
@@ -67,12 +69,13 @@ pageTitle=$( echo $pageData | filterByRegex '<h1 class=\"topic__title copy--h1\"
 	position=$( echo $position | rmDelim )
 
 
+
 	#mongoUserQuery="${mongoUserQuery}{updateOne:{filter:{_id:0x$userId},update:{name:\"$user\"},upsert: true}},"
 
 	#execMongo "db.comments.update({_id:0x$commentId},{user:0x$userId,date:\"$time\",position:\"$position\",content:\"$contentStripped\"},{upsert: true})"
 	#break
 	#14:33 UTC 08 Mar 2006
-	delimOutput "$commentId" "$userId" "$user" "$time" "$position" "$contentStripped"
+	delimOutput "$forumName" "$pageTitle" "$threadID" "$commentId" "$userId" "$user" "$time" "$position" "$contentStripped"
 
 	#echo $user $time $position
 done <<<$(echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?(?=<\/tr>)')
