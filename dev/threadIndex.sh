@@ -81,7 +81,7 @@ countryName=$( echo "$pageData" | filterByRegex '<small class=\"breadcrumbs\">([
 	#break
 	#14:33 UTC 08 Mar 2006
 	delimOutput "$forumName" "$countryName" "$pageTitle" "$threadID" "$commentId" "$userId" "$user" "$time" "$position" "$contentStripped"
-	break
+
 	#echo $user $time $position
 done <<<$(echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?(?=<\/tr>)')
 
