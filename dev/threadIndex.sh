@@ -6,6 +6,10 @@ filterByRegex(){
 	done
 }
 
+execMongo(){
+	mongo --quiet "mongodb+srv://cluster0.vwlck.mongodb.net/adventure-archive" --username brennan-cli -p DKdg40fjPyDzlnbk --eval "$1" | grep -v '^20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9] I NETWORK'
+}
+
 read threadData
 rootURL=$( echo $threadData | cut -d',' -f1 )
 subforum=$( echo $threadData | cut -d',' -f2 | cut -d'/' -f1 )
@@ -20,8 +24,10 @@ fullURL=${rootURL}${subforum}/topics/${thread}/compact?
 pageData=$( curl -Ls $fullURL )
 pageTitle=$( echo $pageData | filterByRegex '<h1 class=\"topic__title copy--h1\">([^<]+)<\/h1>' )
 
+mongoQuery="db.users.insertMany(["
+
 ##Posts
-echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?(?=<\/tr>)' | while IFS= read -r post; do
+ while IFS= read -r post; do
 	post=$( echo $post | tr '^' '\n' )
 	user=$( echo $post | filterByRegex 'post__info__username\">([^<]+)<\/presenter>' )
 	time=$( echo $post | filterByRegex '<small class=\"timeago\">([^<]+)<\/small>')
@@ -29,8 +35,18 @@ echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?
 	position=$( echo $post | filterByRegex '<td class=\"post__position\">([^<]*)<\/td>')
 	[ -z "$position" ] && position="0"
 
-	echo $user $time $position
-done;
+	mongoQuery="${mongoQuery}{ name:\"$user\" },"
+
+	#echo $user $time $position
+done <<<$(echo $pageData | tr -d '^' | tr '\n' '^' | grep -oP '(?<=<tr class=\"post\">).*?(?=<\/tr>)')
+
+
+mongoQuery=$( echo "$mongoQuery" | rev | cut -c2- | rev )
+mongoQuery=${mongoQuery}"])"
+
+execMongo "db.users.ensureIndex('name', {unique: true});"
+execMongo "$mongoQuery"
+
 
 
 exit 0
