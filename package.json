@@ -4,9 +4,9 @@
   "description": "A thorntree forum archiver and searcher",
   "main": "server.js",
   "scripts": {
-	"test": "./dev/rootIndexer.sh | head -n1 | ./dev/subIndexController.sh",
-	"rootIndex": "./dev/rootIndexer.sh > data/forums.csv",
-	"speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
+    "test": "./dev/rootIndexer.sh | head -n1 | ./dev/subIndexController.sh | node ./dev/mongoUploadData.js",
+    "rootIndex": "./dev/rootIndexer.sh > data/forums.csv",
+    "speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,10 @@
     "axios": "^0.21.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^5.0.0",
+    "dotenv": "^8.2.0",
     "expres": "0.0.5",
     "express": "^4.17.1",
+    "mongoose": "^5.10.14",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "style-loader": "^2.0.0"
