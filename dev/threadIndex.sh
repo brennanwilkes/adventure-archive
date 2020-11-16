@@ -59,7 +59,7 @@ pageTitle=$( echo $pageData | filterByRegex '<h1 class=\"topic__title copy--h1\"
 	post=$( echo $post | tr '^' '\n' )
 	user=$( echo $post | filterByRegex 'post__info__username\">([^<]+)<\/presenter>' | rmDelim )
 	userId=$( echo "$user" | hash | rmDelim )
-	time=$( echo $post | filterByRegex '<small class=\"timeago\">([^<]+)<\/small>' | tr '\n' ' ' | rmDelim )
+	time=$( echo $post | filterByRegex '<small class=\"timeago\">([^<]+)<\/small>' | xargs | rmDelim )
 	content=$( echo $post | grep -oP '(?<=<td class=\"post__text\"><p>).*?(?=<\/p><\/td>)' | rmDelim )
 	contentStripped=$( echo $content | sed -E 's/<\/?(a|br|strong|em|light|weak|i|b|li|ul|ol|p|u|presenter)[^>]*>//g' | rmDelim )
 	commentId=$( echo "${userId}${time}${pageTitle}" | hash | rmDelim )
