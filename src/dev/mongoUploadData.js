@@ -26,6 +26,7 @@ const upsertData = (Model,filter,data) => {
 		});
 }
 
+
 connection.once("open", () => {
 	console.log("Reading STDIN");
 	stdInterface.prompt();
