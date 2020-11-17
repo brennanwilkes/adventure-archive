@@ -1,9 +1,11 @@
-var readline = require("readline");
+const readline = require("readline");
 
 
 console.log("connecting to mongo")
-const connection = require("../database/connection");
+const {connection, mongoose} = require("../database/connection");
 const Comment = require("../database/comment");
+const Thread = require("../database/thread");
+const User = require("../database/user");
 
 
 const stdInterface = readline.createInterface({
@@ -12,29 +14,65 @@ const stdInterface = readline.createInterface({
 	terminal: false
 });
 
+const upsertData = (Model,filter,data) => {
+	Model.updateOne(
+		filter,
+		data,
+		{upsert:true},
+		(err,docs) => {
+			if(err){
+				console.error(err);
+			}
+		});
+}
+
 connection.once("open", () => {
 	console.log("Reading STDIN")
 	stdInterface.prompt();
 	stdInterface.on("line", data => {
 		data = data.split("<>DELIM<>");
 
-		Comment.updateOne(
+		if(data[4] === undefined){
+			console.error("Failed to upload forum. Data Recieved:");
+			console.error(data[0].substring(0,100));
+			return;
+		}
+
+		upsertData(
+			Comment,
 			{_id: parseInt(data[4],16)},
 			{
-				subforum: data[0],
-				country: data[1],
 				threadId: parseInt(data[3],16),
 				userId: parseInt(data[5],16),
 				date: data[7],
 				position: data[8],
 				content: data[9]
-			},
-			{upsert:true},
-			(err,docs) => {
-				if(err){
-					console.error(err);
-				}
 			});
+
+		upsertData(
+			User,
+			{_id: parseInt(data[5],16)},
+			{name: data[6]});
+
+		upsertData(
+			Thread,
+			{_id: parseInt(data[3],16)},
+			{
+				subforum: data[0],
+				country: data[1],
+				title: data[2]
+			});
+
+			//Mongoose has memory leaks :(
+		delete mongoose.models['User'];
+		delete mongoose.models['Thread'];
+		delete mongoose.models['Comment'];
+		delete connection.collections['users'];
+		delete connection.collections['threads'];
+		delete connection.collections['comments'];
+		delete mongoose.modelSchemas['User'];
+		delete mongoose.modelSchemas['Thread'];
+		delete mongoose.modelSchemas['Comment'];
 
 
 	});
