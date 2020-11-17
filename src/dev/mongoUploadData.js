@@ -3,9 +3,9 @@ const readline = require("readline");
 
 console.log("connecting to mongo")
 const {connection, mongoose} = require("../database/connection");
-const Comment = require("../database/comment");
-const Thread = require("../database/thread");
-const User = require("../database/user");
+const Comment = require("../database/models/comment");
+const Thread = require("../database/models/thread");
+const User = require("../database/models/user");
 
 
 const stdInterface = readline.createInterface({

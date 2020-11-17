@@ -4,9 +4,9 @@
   "description": "A thorntree forum archiver and searcher",
   "main": "server.js",
   "scripts": {
-    "scrapeData": "./dev/rootIndexer.sh | xargs -d'\\n' -n1 -P 32 ./dev/subforumIndex.sh | xargs -d'\\n' -n1 -P256 ./dev/threadIndex.sh | node ./dev/mongoUploadData.js",
-    "rootIndex": "./dev/rootIndexer.sh > data/forums.csv",
-    "speedTest": "./dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
+    "scrapeData": "./src/dev/rootIndexer.sh | xargs -d'\\n' -n1 -P 32 ./src/dev/subforumIndex.sh | xargs -d'\\n' -n1 -P256 ./src/dev/threadIndex.sh | node ./src/dev/mongoUploadData.js",
+    "rootIndex": "./src/dev/rootIndexer.sh > data/forums.csv",
+    "speedTest": "./src/dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120"
   },
   "repository": {
     "type": "git",
