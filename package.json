@@ -5,7 +5,7 @@
 	"main": "src/app.js",
 	"scripts": {
 		"start": "node .",
-		"scrapeData": "./src/dev/rootIndexer.sh | xargs -d'\\n' -n1 -P 32 ./src/dev/subforumIndex.sh | xargs -d'\\n' -n1 -P256 ./src/dev/threadIndex.sh | node ./src/dev/mongoUploadData.js",
+		"scrapeData": "./src/dev/scrapeData.sh",
 		"rootIndex": "./src/dev/rootIndexer.sh > data/forums.csv",
 		"speedTest": "./src/dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120",
 		"dev": "run-p watch dev:server",

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 filterByRegex(){
 	while read line; do
 		echo "$line" | grep -oE "$1" | sed -E "s/$1/\1/g"

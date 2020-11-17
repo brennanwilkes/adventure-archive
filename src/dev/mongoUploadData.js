@@ -27,7 +27,7 @@ const upsertData = (Model,filter,data) => {
 }
 
 connection.once("open", () => {
-	console.log("Reading STDIN")
+	console.log("Reading STDIN");
 	stdInterface.prompt();
 	stdInterface.on("line", data => {
 		data = data.split("<>DELIM<>");
@@ -73,7 +73,6 @@ connection.once("open", () => {
 		delete mongoose.modelSchemas['User'];
 		delete mongoose.modelSchemas['Thread'];
 		delete mongoose.modelSchemas['Comment'];
-
 
 	});
 });
