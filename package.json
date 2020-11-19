@@ -33,7 +33,7 @@
 		"dotenv": "^8.2.0",
 		"expres": "0.0.5",
 		"express": "^4.17.1",
-		"mongoose": "^5.10.14",
+		"mongoose": "4.x.x",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"react-icons": "^3.11.0",
