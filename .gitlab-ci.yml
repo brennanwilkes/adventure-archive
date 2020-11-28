@@ -37,7 +37,9 @@ update-pages:
   image: alpine
   cache: {}
   script:
+    - ls -al coverage/
     - test -f coverage/lcov-report/index.html && mv coverage/lcov-report/ public/
+    - ls -al public/
   artifacts:
     paths:
       - public/
