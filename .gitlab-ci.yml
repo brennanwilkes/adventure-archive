@@ -1,0 +1,88 @@
+
+before_script:
+  - uname -a
+
+stages:
+  - build
+  - package
+  - deploy
+
+variables:
+  GITLAB_DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+
+build-react:
+  stage: build
+  image: node:12-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm --version
+    - node --version
+    - npm install
+    - npm run build:frontend
+  artifacts:
+    paths:
+      - public/
+  when: always
+
+docker:
+  stage: package
+  cache: {}
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" | tee /kaniko/.docker/config.json
+    - echo $GITLAB_DOCKER_IMAGE
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $GITLAB_DOCKER_IMAGE
+  only:
+    - master
+
+deploy-heroku-production-docker:
+  stage: deploy
+  type: deploy
+  cache: {}
+  image: docker
+  environment:
+    name: production
+    url: https://$HEROKU_APP_PRODUCTION.herokuapp.com/sum
+  services:
+    - docker:dind
+  variables:
+    # Use TLS https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#tls-enabled
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - test -n $HEROKU_API_KEY
+    - test -n $HEROKU_APP_PRODUCTION
+    - test -n $GITLAB_DOCKER_IMAGE
+    - apk add --no-cache --update curl
+    - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+    - docker pull $GITLAB_DOCKER_IMAGE
+    - docker logout
+    - docker images
+    - WEB_DOCKER_IMAGE_ID=$(docker inspect $GITLAB_DOCKER_IMAGE --format={{.Id}})
+    - >-
+      data='{
+        "updates": [ {
+          "type": "web",
+          "docker_image": "'$WEB_DOCKER_IMAGE_ID'"
+        } ] }'
+    - echo $data
+    - echo $HEROKU_API_KEY | docker login -u _ --password-stdin registry.heroku.com
+    - docker tag $GITLAB_DOCKER_IMAGE registry.heroku.com/$HEROKU_APP_PRODUCTION/web
+    - docker push registry.heroku.com/$HEROKU_APP_PRODUCTION/web
+    - docker logout
+    - >-
+      curl
+      -u _:$HEROKU_API_KEY
+      -X PATCH
+      https://api.heroku.com/apps/$HEROKU_APP_PRODUCTION/formation
+      -H "Content-Type: application/json"
+      -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
+      -d "$data"
+  only:
+    - master
