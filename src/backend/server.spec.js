@@ -26,38 +26,27 @@ test("Server 404 handling", async done => {
 	done();
 });
 
-test("Default API", async done => {
-	const res = await request.get("/api");
-	expect(res.status >= 200 && res.status <= 299).toBe(true);
-	done();
-});
+let version;
+for(let i=-1;i<CONFIG.api.length;i++){
 
-test("Versioned APIs", async done => {
-	for(let i=0;i<CONFIG.api.length;i++){
-		const res = await request.get(`/api/v${CONFIG.api[i].version}`);
-		expect(res.status >= 200 && res.status <= 299).toBe(true);
-	}
-	done();
-});
+	version = (i<0 ? "" : `v${CONFIG.api[i].version}/`);
 
-["comment","thread","user"].forEach((endpoint, i) => {
-	test(`${endpoint} endpoint responds`, async done => {
-		let res = await request.get(`/api/${endpoint}s`);
-		expect(res.status >= 200 && res.status <= 299).toBe(true);
+	["comment","thread","user"].forEach(endpoint => {
+		test(`${endpoint} endpoint responds`, async done => {
+			let res = await request.get(`/api/${version}${endpoint}s`);
+			expect(res.status >= 200 && res.status <= 299).toBe(true);
 
-		res = await request.get(`/api/${endpoint}s/1`);
-		expect(res.status >= 200 && res.status <= 299).toBe(true);
+			res = await request.get(`/api/${version}${endpoint}s/1`);
+			expect(res.status >= 200 && res.status <= 299).toBe(true);
 
-		res = await request.post(`/api/${endpoint}s`);
-		expect(res.status >= 200 && res.status <= 299).toBe(true);
+			res = await request.post(`/api/${version}${endpoint}s`);
+			expect(res.status >= 200 && res.status <= 299).toBe(true);
 
-		done();
+			done();
+		});
 	});
-});
 
-
-
-
+}
 
 test("Print integrity", () => {
 	console.log = jest.fn();
