@@ -45,7 +45,7 @@ exports.server = {
 		this.app.use(bodyParser.urlencoded({ extended: false }));
 
 		//Static routing for public files
-		this.app.use('/', express.static(path.join(__dirname,"..", "..", "public")));
+		this.app.use('/', express.static(path.join(__dirname,"..", "..", "public-frontend")));
 	},
 
 	start(){
