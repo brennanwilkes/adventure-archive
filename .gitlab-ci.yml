@@ -4,6 +4,7 @@ before_script:
 
 stages:
   - test
+  - pages
   - package
   - deploy
 
@@ -31,8 +32,8 @@ jest:
     expire_in: 1 week
   when: always
 
-pages:
-  stage: test
+update-pages:
+  stage: pages
   image: alpine
   cache: {}
   script:
