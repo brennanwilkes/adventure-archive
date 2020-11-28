@@ -39,7 +39,7 @@ docker:
     - echo $GITLAB_DOCKER_IMAGE
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $GITLAB_DOCKER_IMAGE
   only:
-    - master
+    - main
 
 deploy-heroku-production-docker:
   stage: deploy
@@ -85,4 +85,4 @@ deploy-heroku-production-docker:
       -H "Accept: application/vnd.heroku+json; version=3.docker-releases"
       -d "$data"
   only:
-    - master
+    - main
