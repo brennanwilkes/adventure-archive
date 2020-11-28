@@ -1,1 +1,1 @@
-# adventure-archive\n 2600
+# adventure-archive
