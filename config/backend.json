@@ -1,5 +1,12 @@
 {
 	"host": "localhost",
 	"port": 8080,
-	"verbose": true
+	"verbose": true,
+	"api" : [
+		{
+			"default": true,
+			"version": "0.0.1",
+			"path": "routes/index.js"
+		}
+	]
 }

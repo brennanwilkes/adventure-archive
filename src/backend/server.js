@@ -2,7 +2,6 @@ const express = require('express');
 const path = require("path");
 const bodyParser = require('body-parser')
 
-
 //Store all backend config vars here
 const CONFIG = require(path.join(__dirname,"..", "..","config","backend.json"));
 exports.CONFIG = CONFIG
@@ -14,27 +13,13 @@ const print = (...content) => {
 exports.print = print
 
 
+
 /*
 	Server backend object
 */
 exports.server = {
 	port : process.env.PORT || 8080,
 	app: express(),
-
-	route(path,promise,method="get"){
-		path = path.substring(0,1) === "/" ? path : "/"+path;
-
-		this.app[method](path, (req,res) => {
-			promise(req).then(data => {
-				res.send(data);
-				res.end();
-			}).catch(error => {
-				res.send("<h1>Internal Error</h1><br>"+error);
-				res.end();
-			});
-		});
-		print(`Setup ${method} route for ${path}`)
-	},
 
 	init(){
 
@@ -46,6 +31,19 @@ exports.server = {
 
 		//Static routing for public files
 		this.app.use('/', express.static(path.join(__dirname,"..", "..", "public-frontend")));
+
+		//api routing
+		CONFIG.api.forEach((api, i) => {
+
+			const apiRouter = require(`./${api.path}`);
+			if(api.default){
+				this.app.use(`/api`, apiRouter);
+			}
+			this.app.use(`/api/v${api.version}`, apiRouter);
+			print(`Created API route v${api.version}`);
+
+		});
+
 	},
 
 	start(){
@@ -63,5 +61,9 @@ exports.server = {
 		this.server = this.app.listen(this.port, () => {
 			print('server is listening on port', this.server.address().port);
 		});
+	},
+
+	close(){
+		this.server.close();
 	}
 }
