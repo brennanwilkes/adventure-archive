@@ -18,7 +18,7 @@ exports.print = print
 	Server backend object
 */
 exports.server = {
-	port : process.env.PORT || CONFIG.port,
+	port : CONFIG.port,
 	app: express(),
 
 	route(path,promise,method="get"){

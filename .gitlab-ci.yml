@@ -20,7 +20,6 @@ build-react:
   script:
     - npm --version
     - node --version
-    - npm install
   artifacts:
     paths:
       - public/
