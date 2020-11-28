@@ -3,27 +3,11 @@ before_script:
   - uname -a
 
 stages:
-  - build
   - package
   - deploy
 
 variables:
   GITLAB_DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-
-build-react:
-  stage: build
-  image: node:12-alpine
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-  script:
-    - npm --version
-    - node --version
-  artifacts:
-    paths:
-      - public/
-  when: always
 
 docker:
   stage: package
