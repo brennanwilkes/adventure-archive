@@ -3,11 +3,46 @@ before_script:
   - uname -a
 
 stages:
+  - test
   - package
   - deploy
 
 variables:
   GITLAB_DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+
+jest:
+  stage: test
+  image: node:12-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  script:
+    - npm --version
+    - node --version
+    - npm install
+    - npm run test
+  coverage: '/All files[^|]*\|[^|]*\s([\d.]+)/'
+  artifacts:
+    paths:
+      - coverage/
+    reports:
+      junit: 'coverage/junit.xml'
+    expire_in: 1 week
+  when: always
+
+pages:
+  stage: test
+  image: alpine
+  cache: {}
+  script:
+    - test -f coverage/lcov-report/index.html && mv coverage/lcov-report/ public/
+  artifacts:
+    paths:
+      - public/
+    expire_in: 1 hour
+  when: always
+
 
 docker:
   stage: package
