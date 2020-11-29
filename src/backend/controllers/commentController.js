@@ -50,15 +50,25 @@ exports.getComments = (req,res) => {
 	Comment.find({})
 		.limit(10)
 		.then(results => res.send(formatCommentData(results)))
-		.catch(error => res.send(error));
+		.catch(error => {
+			res.status(500)
+			res.send(error);
+		});
 }
 exports.getComment = (req,res) => {
 
 	const json = {};
 	Comment.findOne({_id:req.params.id})
 		.then(results => {
+			if(results.length === 0){
+				res.status(404);
+				res.send(`Resource ${req.params.id} not found`);
+			}
 			res.send(formatCommentData(results))})
-		.catch(error => res.send(error));
+		.catch(error => {
+			res.status(404);
+			res.send(`Resource ${req.params.id} not found`);
+		});
 }
 exports.postComment = (req,res) => {
 	res.send("todo");

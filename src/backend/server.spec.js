@@ -91,6 +91,17 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 		done();
 	});
+
+	test("Get specific comment resource which does not exist", async done => {
+
+		let res = await request.get(`/api/${version}comments/garbage`);
+		expect(res.status).toBe(404);
+
+		res = await request.get(`/api/${version}comments/1`);
+		expect(res.status).toBe(404);
+
+		done();
+	});
 }
 
 
