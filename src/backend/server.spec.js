@@ -10,7 +10,7 @@ server.start();
 
 const idParams = {
 	comment: "6.214545011292772e+47",
-	user: "9.813252315982051e+47",
+	user: "8.290203131731329e+47",
 	thread: "1.2858713569550184e+48"
 }
 
@@ -33,13 +33,13 @@ const testComments = comments => comments.forEach(comment => testDocumentIntegri
 	"threadId",
 	"userId",
 	"links"
-], 4));
+], 5));
 
 const testUsers = users => users.forEach(user => testDocumentIntegrity(user, [
 	"_id",
 	"name",
 	"links"
-]));
+], 2));
 
 const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(thread, [
 	"_id",
@@ -47,7 +47,7 @@ const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(t
 	"country",
 	"title",
 	"links"
-]));
+], 2));
 
 testDocuments = {
 	comments : testComments,
@@ -158,6 +158,17 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
+	test(`Get comments with specific user`, async done => {
+		let res = await request.get(`/api/${version}comments?user=${idParams.user.replace("+","%2B")}`);
+		expect(res.status).toBe(200);
+		expect(res.body.comments.length).toBe(1);
+
+		res = await request.get(`/api/${version}comments?user=asdf`);
+		expect(res.status).toBe(422);
+
+
+		done();
+	});
 
 
 }

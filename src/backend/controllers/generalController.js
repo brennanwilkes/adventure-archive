@@ -22,6 +22,12 @@ exports.getReqPath = getReqPath;
 const addLinks = (doc, type, reqPath) => {
 
 	doc.links = [link("self",`${reqPath}/${type}s/${doc._id}`)];
+	if(type==="thread"){
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc._id.toString().replace("+","%2B")}`));
+	}
+	else if(type==="user"){
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc._id.toString().replace("+","%2B")}`));
+	}
 
 	if(doc.threadId){
 		doc.links.push(link("thread",`${reqPath}/threads/${doc.threadId}`));
@@ -30,6 +36,7 @@ const addLinks = (doc, type, reqPath) => {
 
 	if(doc.userId){
 		doc.links.push(link("user",`${reqPath}/users/${doc.userId}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc.userId.toString().replace("+","%2B")}`));
 	}
 
 	return doc;
