@@ -14,55 +14,51 @@ const idParams = {
 	thread: "1.2858713569550184e+48"
 }
 
-const testLinkIntegrity = json => {
-	expect(Object.keys(json.links[0])).toEqual(expect.arrayContaining([
+testDocumentIntegrity = (doc, requires, linkLength = 1) => {
+	expect(Object.keys(doc)).toEqual(expect.arrayContaining(requires));
+	expect(Object.keys(doc.links[0])).toEqual(expect.arrayContaining([
 		"rel",
 		"href",
 		"action",
 		"types"
 	]));
+	expect(doc.links.length).toBe(linkLength);
 }
 
-const testCommentIntegrity = comment => {
-	expect(Object.keys(comment)).toEqual(expect.arrayContaining([
-		"_id",
-		"content",
-		"date",
-		"position",
-		"threadId",
-		"userId",
-		"links"
-	]));
-	expect(comment.links.length).toBe(3);
-	testLinkIntegrity(comment);
-}
+const testCommentIntegrity = comment => testDocumentIntegrity(comment, [
+	"_id",
+	"content",
+	"date",
+	"position",
+	"threadId",
+	"userId",
+	"links"
+], 3);
 
-const testUserIntegrity = user => {
-	expect(Object.keys(user)).toEqual(expect.arrayContaining([
-		"_id",
-		"name",
-		"links"
-	]));
-	expect(user.links.length).toBe(1);
-	testLinkIntegrity(user);
-}
+const testUserIntegrity = user => testDocumentIntegrity(user, [
+	"_id",
+	"name",
+	"links"
+]);
 
-
-const testThreadIntegrity = thread => {
-	expect(Object.keys(thread)).toEqual(expect.arrayContaining([
-		"_id",
-		"subforum",
-		"country",
-		"title",
-		"links"
-	]));
-	expect(thread.links.length).toBe(1);
-	testLinkIntegrity(thread);
-}
+const testThreadIntegrity = thread => testDocumentIntegrity(thread, [
+	"_id",
+	"subforum",
+	"country",
+	"title",
+	"links"
+]);
 
 const testComments = comments => comments.forEach(c => testCommentIntegrity(c));
 const testUsers = users => users.forEach(u => testUserIntegrity(u));
 const testThreads = threads => threads.forEach(t => testThreadIntegrity(t));
+
+testDocuments = {
+	comments : testComments,
+	users : testUsers,
+	threads : testThreads
+}
+
 
 test("Config file integrity", () => {
 	const configKeys = Object.keys(CONFIG);
@@ -103,102 +99,37 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 			done();
 		});
+
+		test(`Get ${endpoint}s resource collection`, async done => {
+			const res = await request.get(`/api/${version}${endpoint}s`);
+
+			expect(res.body[`${endpoint}s`].length).toBeGreaterThanOrEqual(1);
+			testDocuments[`${endpoint}s`](res.body[`${endpoint}s`],endpoint);
+
+			done();
+		});
+
+		test(`Get specific ${endpoint} resource`, async done => {
+
+			const res = await request.get(`/api/${version}${endpoint}s/${idParams[endpoint]}`);
+
+			expect(res.body[`${endpoint}s`].length).toBe(1);
+			testDocuments[`${endpoint}s`](res.body[`${endpoint}s`]);
+			expect(res.body[`${endpoint}s`][0]._id).toBe(parseFloat(idParams[endpoint]));
+
+			done();
+		});
+
+		test(`Get specific ${endpoint} resource which does not eixst`, async done => {
+
+			let res = await request.get(`/api/${version}${endpoint}s/garbage`);
+			expect(res.status).toBe(404);
+			res = await request.get(`/api/${version}${endpoint}s/1`);
+			expect(res.status).toBe(404);
+
+			done();
+		});
 	});
-
-	test("Get comments resource collection", async done => {
-		const res = await request.get(`/api/${version}comments`);
-
-		expect(res.body.comments.length).toBeGreaterThanOrEqual(1);
-		testComments(res.body.comments);
-
-		done();
-	});
-
-	test("Get specific comment resource", async done => {
-
-		const res = await request.get(`/api/${version}comments/${idParams.comment}`);
-
-		expect(res.body.comments.length).toBe(1);
-		testComments(res.body.comments);
-		expect(res.body.comments[0]._id).toBe(parseFloat(idParams.comment));
-
-		done();
-	});
-
-	test("Get specific comment resource which does not exist", async done => {
-
-		let res = await request.get(`/api/${version}comments/garbage`);
-		expect(res.status).toBe(404);
-		res = await request.get(`/api/${version}comments/1`);
-		expect(res.status).toBe(404);
-
-		done();
-	});
-
-	/////////////////////////////
-
-	test("Get users resource collection", async done => {
-		const res = await request.get(`/api/${version}users`);
-
-		expect(res.body.users.length).toBeGreaterThanOrEqual(1);
-		testUsers(res.body.users);
-
-		done();
-	});
-
-	test("Get specific user resource", async done => {
-
-		const res = await request.get(`/api/${version}users/${idParams.user}`);
-
-		expect(res.body.users.length).toBe(1);
-		testUsers(res.body.users);
-		expect(res.body.users[0]._id).toBe(parseFloat(idParams.user));
-
-		done();
-	});
-
-	test("Get specific user resource which does not exist", async done => {
-
-		let res = await request.get(`/api/${version}users/garbage`);
-		expect(res.status).toBe(404);
-		res = await request.get(`/api/${version}users/1`);
-		expect(res.status).toBe(404);
-
-		done();
-	});
-
-	/////////////////////////////////////////////
-
-	test("Get threads resource collection", async done => {
-		const res = await request.get(`/api/${version}threads`);
-
-		expect(res.body.threads.length).toBeGreaterThanOrEqual(1);
-		testThreads(res.body.threads);
-
-		done();
-	});
-
-	test("Get specific thread resource", async done => {
-
-		const res = await request.get(`/api/${version}threads/${idParams.thread}`);
-
-		expect(res.body.threads.length).toBe(1);
-		testThreads(res.body.threads);
-		expect(res.body.threads[0]._id).toBe(parseFloat(idParams.thread));
-
-		done();
-	});
-
-	test("Get specific thread resource which does not exist", async done => {
-
-		let res = await request.get(`/api/${version}threads/garbage`);
-		expect(res.status).toBe(404);
-		res = await request.get(`/api/${version}users/1`);
-		expect(res.status).toBe(404);
-
-		done();
-	});
-
 }
 
 
