@@ -22,7 +22,7 @@ jest:
     - npm --version
     - node --version
     - npm install
-    - npm run test
+    - npm run test --silent
   coverage: '/All files[^|]*\|[^|]*\s([\d.]+)/'
   artifacts:
     paths:
