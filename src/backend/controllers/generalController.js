@@ -22,13 +22,21 @@ exports.getReqPath = getReqPath;
 const addLinks = (doc, type, reqPath) => {
 
 	doc.links = [link("self",`${reqPath}/${type}s/${doc._id}`)];
+	if(type==="thread"){
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc._id.toString().replace("+","%2B")}`));
+	}
+	else if(type==="user"){
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc._id.toString().replace("+","%2B")}`));
+	}
 
 	if(doc.threadId){
 		doc.links.push(link("thread",`${reqPath}/threads/${doc.threadId}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc.threadId.toString().replace("+","%2B")}`));
 	}
 
 	if(doc.userId){
 		doc.links.push(link("user",`${reqPath}/users/${doc.userId}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc.userId.toString().replace("+","%2B")}`));
 	}
 
 	return doc;
@@ -56,18 +64,19 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, limit=100) => {
+exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 100) => {
 
 	if(req.query.limit){
 		limit = parseInt(req.query.limit);
 	}
 
-	Model.find({})
+	Model.find(searchQuery)
 		.limit(limit)
 		.then(results => {
 			res.send(formatter(results,getReqPath(req)));
 		})
 		.catch(error => {
+			console.error(error)
 			res.status(500);
 			res.send(error);
 		});
@@ -78,7 +87,7 @@ exports.getDoc = (req, res, Model, formatter) => {
 
 	Model.findOne({_id:req.params.id})
 		.then(results => {
-			if(results.length === 0){
+			if(results.length === 0 || results===null){
 				res.status(404);
 				res.send(`Resource ${req.params.id} not found`);
 			}
