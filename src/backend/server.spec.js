@@ -25,7 +25,7 @@ testDocumentIntegrity = (doc, requires, linkLength = 1) => {
 	expect(doc.links.length).toBe(linkLength);
 }
 
-const testCommentIntegrity = comment => testDocumentIntegrity(comment, [
+const testComments = comments => comments.forEach(comment => testDocumentIntegrity(comment, [
 	"_id",
 	"content",
 	"date",
@@ -33,25 +33,21 @@ const testCommentIntegrity = comment => testDocumentIntegrity(comment, [
 	"threadId",
 	"userId",
 	"links"
-], 3);
+], 3));
 
-const testUserIntegrity = user => testDocumentIntegrity(user, [
+const testUsers = users => users.forEach(user => testDocumentIntegrity(user, [
 	"_id",
 	"name",
 	"links"
-]);
+]));
 
-const testThreadIntegrity = thread => testDocumentIntegrity(thread, [
+const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(thread, [
 	"_id",
 	"subforum",
 	"country",
 	"title",
 	"links"
-]);
-
-const testComments = comments => comments.forEach(c => testCommentIntegrity(c));
-const testUsers = users => users.forEach(u => testUserIntegrity(u));
-const testThreads = threads => threads.forEach(t => testThreadIntegrity(t));
+]));
 
 testDocuments = {
 	comments : testComments,
