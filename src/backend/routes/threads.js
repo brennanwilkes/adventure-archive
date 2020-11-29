@@ -1,6 +1,8 @@
-const {getThreads, getThread, postThread} = require("../controllers/threadController");
-
 const rte = require('express').Router();
-module.exports = rte.get('/', getThreads)
+
+const {getThreads, getThread, postThread} = require("../controllers/threadController");
+const {getThreadValidator} = require("../validators/threadValidator");
+
+module.exports = rte.get('/', getThreadValidator, getThreads)
 					.get('/:id', getThread)
 					.post('/', postThread);

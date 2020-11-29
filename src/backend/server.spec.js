@@ -125,6 +125,25 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 			done();
 		});
+
+		test(`Get ${endpoint}s with limit param`, async done => {
+			const res = await request.get(`/api/${version}${endpoint}s?limit=35`);
+
+			expect(res.body[`${endpoint}s`].length).toBeLessThanOrEqual(35);
+			testDocuments[`${endpoint}s`](res.body[`${endpoint}s`],endpoint);
+
+			done();
+		});
+
+		test(`Get ${endpoint}s with garbage param`, async done => {
+			const res = await request.get(`/api/${version}${endpoint}s?limit=asdfasdf`);
+
+			expect(res.status).toBe(422);
+
+			done();
+		});
+
+
 	});
 }
 

@@ -30,7 +30,9 @@ jest:
     reports:
       junit: 'coverage/junit.xml'
     expire_in: 1 week
-  when: always
+  only:
+    - development
+    - main
 
 pages:
   stage: coverage
@@ -44,7 +46,9 @@ pages:
     paths:
       - public/
     expire_in: 1 hour
-  when: always
+  only:
+    - development
+    - main
 
 
 docker:

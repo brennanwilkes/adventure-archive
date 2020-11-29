@@ -1,6 +1,8 @@
-const {getUsers, getUser, postUser} = require("../controllers/userController");
-
 const rte = require('express').Router();
-module.exports = rte.get('/', getUsers)
+
+const {getUsers, getUser, postUser} = require("../controllers/userController");
+const {getUserValidator} = require("../validators/userValidator");
+
+module.exports = rte.get('/', getUserValidator, getUsers)
 					.get('/:id', getUser)
 					.post('/', postUser);
