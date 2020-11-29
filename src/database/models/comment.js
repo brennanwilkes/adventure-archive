@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const {mongoose} = require("../connection");
 
 const Schema = mongoose.Schema;
 
@@ -11,6 +11,6 @@ const CommentSchema = new Schema({
 	content:{type:String}
 });
 
-const Comment = mongoose.model("Comment", CommentSchema);
+const Comment = mongoose.model("comment", CommentSchema);
 
 module.exports = Comment;

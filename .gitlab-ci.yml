@@ -22,7 +22,7 @@ jest:
     - npm --version
     - node --version
     - npm install
-    - npm run test
+    - npm run test --silent
   coverage: '/All files[^|]*\|[^|]*\s([\d.]+)/'
   artifacts:
     paths:
@@ -38,7 +38,7 @@ pages:
   cache: {}
   script:
     - ls -al coverage/
-    - test -f coverage/lcov-report/index.html && mv coverage/lcov-report/ public/
+    - test -f coverage/lcov-report/index.html && rm -rf public/* && mv coverage/lcov-report/ public/
     - ls -al public/
   artifacts:
     paths:

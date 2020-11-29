@@ -27,7 +27,7 @@ exports.server = {
 		this.app.use(express.json());
 
 		// support encoded bodies
-		this.app.use(bodyParser.urlencoded({ extended: false }));
+		this.app.use(bodyParser.urlencoded({ extended: true }));
 
 		//Static routing for public files
 		this.app.use('/', express.static(path.join(__dirname,"..", "..", "public-frontend")));
