@@ -48,7 +48,7 @@ const formatCommentData = results => {
 exports.getComments = (req,res) => {
 
 	Comment.find({})
-		.limit(10)
+		.limit(100)
 		.then(results => res.send(formatCommentData(results)))
 		.catch(error => {
 			res.status(500)
