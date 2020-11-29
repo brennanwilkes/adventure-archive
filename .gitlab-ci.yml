@@ -78,6 +78,7 @@ deploy-heroku-production-docker:
   script:
     - test -n $HEROKU_API_KEY
     - test -n $HEROKU_APP_PRODUCTION
+    - test -n $DB_CONNECTION
     - test -n $GITLAB_DOCKER_IMAGE
     - apk add --no-cache --update curl
     - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
