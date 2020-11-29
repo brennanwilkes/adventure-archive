@@ -142,8 +142,6 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 			done();
 		});
-
-
 	});
 
 	test(`Get comments with specific forum`, async done => {
@@ -169,6 +167,22 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 		done();
 	});
+
+	test(`Search queries`, async done => {
+		let res = await request.get(`/api/${version}comments?search=Cabinda&search=1900`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.comments.length).toBe(1);
+		expect(res.body.comments[0]._id).toBe(7.882632764374103e+47);
+
+		res = await request.get(`/api/${version}comments?search=Cabinda`);
+		expect(res.status).toBe(200);
+
+
+		done();
+	});
+
+
 
 
 }

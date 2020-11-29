@@ -12,7 +12,14 @@ const buildQuery = req => {
 	if(req.query.user !== undefined){
 		query.userId = req.query.user;
 	}
-
+	if(req.query.search !== undefined){
+		query.$and = req.query.search.map(
+						q => new RegExp(q)
+					).map(
+						r => {
+							return {content:{$in : r}}
+						});
+	}
 	return query;
 }
 

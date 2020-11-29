@@ -87,7 +87,7 @@ exports.getDoc = (req, res, Model, formatter) => {
 
 	Model.findOne({_id:req.params.id})
 		.then(results => {
-			if(results.length === 0){
+			if(results.length === 0 || results===null){
 				res.status(404);
 				res.send(`Resource ${req.params.id} not found`);
 			}
