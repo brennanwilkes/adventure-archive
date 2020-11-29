@@ -33,7 +33,7 @@ const testComments = comments => comments.forEach(comment => testDocumentIntegri
 	"threadId",
 	"userId",
 	"links"
-], 3));
+], 4));
 
 const testUsers = users => users.forEach(user => testDocumentIntegrity(user, [
 	"_id",
@@ -145,6 +145,21 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 
 	});
+
+	test(`Get comments with specific forum`, async done => {
+		let res = await request.get(`/api/${version}comments?thread=${idParams.thread.replace("+","%2B")}`);
+		expect(res.status).toBe(200);
+		expect(res.body.comments.length).toBe(3);
+
+		res = await request.get(`/api/${version}comments?thread=asdf`);
+		expect(res.status).toBe(422);
+
+
+		done();
+	});
+
+
+
 }
 
 

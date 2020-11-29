@@ -25,6 +25,7 @@ const addLinks = (doc, type, reqPath) => {
 
 	if(doc.threadId){
 		doc.links.push(link("thread",`${reqPath}/threads/${doc.threadId}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc.threadId.toString().replace("+","%2B")}`));
 	}
 
 	if(doc.userId){
@@ -56,18 +57,19 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, limit=100) => {
+exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 100) => {
 
 	if(req.query.limit){
 		limit = parseInt(req.query.limit);
 	}
 
-	Model.find({})
+	Model.find(searchQuery)
 		.limit(limit)
 		.then(results => {
 			res.send(formatter(results,getReqPath(req)));
 		})
 		.catch(error => {
+			console.error(error)
 			res.status(500);
 			res.send(error);
 		});

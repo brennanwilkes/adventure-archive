@@ -3,7 +3,13 @@ const {formatDoc, getDocs, getDoc, postDoc} = require("./generalController");
 
 const commentParams = ["_id", "content", "position", "date", "threadId", "userId"];
 
-exports.getComments = (req, res) => getDocs(req, res, Comment, (results,reqPath) => formatDoc(results, "comment", commentParams, reqPath));
+exports.getComments = (req, res) => getDocs(
+	req,
+	res,
+	Comment,
+	(results,reqPath) => formatDoc(results, "comment", commentParams, reqPath),
+	(req.query.thread===undefined ? {} : {"threadId": req.query.thread})
+);
 
 exports.getComment = (req, res) => getDoc(req, res, Comment, (results,reqPath) => formatDoc(results, "comment", commentParams, reqPath))
 
