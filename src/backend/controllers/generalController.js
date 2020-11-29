@@ -10,14 +10,16 @@ const link = (rel,href) => {
 		types:["application/json"]
 	}
 }
+exports.link = link;
 
 const getReqPath = req => {
 	const url = req.baseUrl.split("/");
 	return `${req.headers.host}${url.slice(0,url.length-1).join("/")}`;
 }
+exports.getReqPath = getReqPath;
 
 
-const addLinks = (doc,type, reqPath) => {
+const addLinks = (doc, type, reqPath) => {
 
 	doc.links = [link("self",`${reqPath}/${type}s/${doc._id}`)];
 
@@ -54,11 +56,11 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, limit=2) => {
+exports.getDocs = (req, res, Model, formatter, limit=100) => {
 
-	console.log(req.headers.host)
-	console.log(req.baseUrl)
-
+	if(req.query.limit){
+		limit = parseInt(req.query.limit);
+	}
 
 	Model.find({})
 		.limit(limit)
