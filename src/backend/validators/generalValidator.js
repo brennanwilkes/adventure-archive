@@ -13,3 +13,16 @@ exports.validationErrorHandlerFactory = linksFactory => {
 		next();
 	}
 }
+
+exports.forceArraySanitizer = (value, { req }) => {
+	let sanitized = [];
+	if(Array.isArray(value)){
+		value.forEach((item, i) => {
+			sanitized.push(item.toString());
+		});
+	}
+	else{
+		sanitized.push(value.toString());
+	}
+	return sanitized;
+}

@@ -182,6 +182,22 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
+	test(`Search users by name`, async done => {
+		let res = await request.get(`/api/${version}users?name=bap9`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.users.length).toBe(1);
+		expect(res.body.users[0]._id).toBe(1.3116457200976267e+48);
+
+		res = await request.get(`/api/${version}users?name=bap9&name=mrmoto`);
+		expect(res.status).toBe(200);
+		expect(res.body.users.length).toBe(2);
+
+
+		done();
+	});
+
+
 
 
 

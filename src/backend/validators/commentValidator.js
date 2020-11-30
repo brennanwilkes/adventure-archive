@@ -1,6 +1,6 @@
 const { check, query, validationResult } = require('express-validator');
 const { link, getReqPath } = require("../controllers/generalController");
-const { validationErrorHandlerFactory } = require("./generalValidator");
+const { validationErrorHandlerFactory, forceArraySanitizer } = require("./generalValidator");
 
 exports.getCommentValidator = [
 	query("limit").if(query("limit").exists()).trim().isInt(),
@@ -16,20 +16,5 @@ exports.getCommentValidator = [
 		link("self",`${getReqPath(req)}/comments?user=9.813252315982051e%2B47`)
 	]),
 	query("search").if(query("search").exists())
-		.customSanitizer((value, { req }) => {
-			let sanitized = [];
-			if(Array.isArray(value)){
-				value.forEach((item, i) => {
-					sanitized.push(item.toString());
-				});
-			}
-			else{
-				sanitized.push(value.toString());
-			}
-			return sanitized;
-		}),
-	validationErrorHandlerFactory(req => [
-		link("self",`${getReqPath(req)}/comments?search=Hello&search=World`),
-		link("self",`${getReqPath(req)}/comments?search=Hello%20World`)
-	])
+		.customSanitizer(forceArraySanitizer)
 ];
