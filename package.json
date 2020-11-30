@@ -19,7 +19,7 @@
 		"url": "git+https://github.com/brennanwilkes/adventure-archive.git"
 	},
 	"author": "Brennan Wilkes",
-	"license": "UNLICENSED",
+	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/brennanwilkes/adventure-archive/issues"
 	},
@@ -44,6 +44,7 @@
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"react-icons": "^3.11.0",
+		"shasum": "^1.0.2",
 		"style-loader": "^2.0.0"
 	},
 	"devDependencies": {
@@ -55,7 +56,6 @@
 		"nodemon": "^2.0.6",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^2.1.2",
-		"shasum": "^1.0.2",
 		"supertest": "^6.0.1",
 		"webpack": "^5.3.2",
 		"webpack-cli": "^4.1.0"
