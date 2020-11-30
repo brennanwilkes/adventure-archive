@@ -1,12 +1,16 @@
+const shasum = require("shasum");
+
 const Comment = require('../../database/models/comment.js');
 
 const ensureArray = data => (Array.isArray(data) ? data : [data]);
+const hash = data => parseInt(shasum(`${data}\n`),16);
+exports.hash = hash;
 
-const link = (rel,href) => {
+const link = (rel,href, action="GET") => {
 	return {
 		rel: rel,
 		href: href,
-		action: "GET",
+		action: action,
 		types:["application/json"]
 	}
 }
@@ -23,20 +27,20 @@ const addLinks = (doc, type, reqPath) => {
 
 	doc.links = [link("self",`${reqPath}/${type}s/${doc._id}`)];
 	if(type==="thread"){
-		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc._id.toString().replace("+","%2B")}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${String(doc._id).replace("+","%2B")}`));
 	}
 	else if(type==="user"){
-		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc._id.toString().replace("+","%2B")}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${String(doc._id).replace("+","%2B")}`));
 	}
 
 	if(doc.threadId){
 		doc.links.push(link("thread",`${reqPath}/threads/${doc.threadId}`));
-		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${doc.threadId.toString().replace("+","%2B")}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${String(doc.threadId).replace("+","%2B")}`));
 	}
 
 	if(doc.userId){
 		doc.links.push(link("user",`${reqPath}/users/${doc.userId}`));
-		doc.links.push(link("comments by user",`${reqPath}/comments?user=${doc.userId.toString().replace("+","%2B")}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${String(doc.userId).replace("+","%2B")}`));
 	}
 
 	return doc;
@@ -76,9 +80,7 @@ exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 10) => 
 			res.send(formatter(results,getReqPath(req)));
 		})
 		.catch(error => {
-			console.error(error)
-			res.status(500);
-			res.send(error);
+			res.status(500).send(error);
 		});
 }
 
@@ -97,8 +99,32 @@ exports.getDoc = (req, res, Model, formatter) => {
 			res.send(`Resource ${req.params.id} not found`);
 		});
 }
-exports.postDoc = (req,res) => {
-	res.send("todo");
+
+exports.postDoc = (req, res, Model, sanitySearch, newData, responseCallback) => {
+	Model.find(sanitySearch)
+		.limit(1)
+		.then(results => {
+			if(results.length === 0){
+				res.status(201);
+
+				new Model(newData).save().then(response => {
+					const reqCopy = req;
+					reqCopy.params.id = newData._id;
+					responseCallback(reqCopy,res);
+
+				}).catch(error => {
+					res.status(500).send(error);
+				})
+			}
+			else{
+				const reqCopy = req;
+				reqCopy.params.id = newData._id;
+				responseCallback(reqCopy,res);
+			}
+		})
+		.catch(error => {
+			res.status(500).send(error);
+		});
 }
 
 exports.buildRegexList = (params,field) => params.map(q => new RegExp(q,'i')).map(r => {
