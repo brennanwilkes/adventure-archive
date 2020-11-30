@@ -83,7 +83,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 	["comment","thread","user"].forEach(endpoint => {
 
-		test(`${endpoint} endpoint responds`, async done => {
+		test(`${endpoint} endpoint responds with api ${version?version:"default"}`, async done => {
 			let res = await request.get(`/api/${version}${endpoint}s`);
 			expect(res.status >= 200 && res.status <= 299).toBe(true);
 
@@ -96,7 +96,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			done();
 		});
 
-		test(`Get ${endpoint}s resource collection`, async done => {
+		test(`Get ${endpoint}s resource collection with api ${version?version:"default"}`, async done => {
 			const res = await request.get(`/api/${version}${endpoint}s`);
 
 			expect(res.body[`${endpoint}s`].length).toBeGreaterThanOrEqual(1);
@@ -105,7 +105,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			done();
 		});
 
-		test(`Get specific ${endpoint} resource`, async done => {
+		test(`Get specific ${endpoint} resource with api ${version?version:"default"}`, async done => {
 
 			const res = await request.get(`/api/${version}${endpoint}s/${idParams[endpoint]}`);
 
@@ -116,7 +116,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			done();
 		});
 
-		test(`Get specific ${endpoint} resource which does not eixst`, async done => {
+		test(`Get specific ${endpoint} resource which does not eixst with api ${version?version:"default"}`, async done => {
 
 			let res = await request.get(`/api/${version}${endpoint}s/garbage`);
 			expect(res.status).toBe(404);
@@ -126,7 +126,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			done();
 		});
 
-		test(`Get ${endpoint}s with limit param`, async done => {
+		test(`Get ${endpoint}s with limit param with api ${version?version:"default"}`, async done => {
 			const res = await request.get(`/api/${version}${endpoint}s?limit=35`);
 
 			expect(res.body[`${endpoint}s`].length).toBeLessThanOrEqual(35);
@@ -135,7 +135,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			done();
 		});
 
-		test(`Get ${endpoint}s with garbage param`, async done => {
+		test(`Get ${endpoint}s with garbage param with api ${version?version:"default"}`, async done => {
 			const res = await request.get(`/api/${version}${endpoint}s?limit=asdfasdf`);
 
 			expect(res.status).toBe(422);
@@ -144,7 +144,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		});
 	});
 
-	test(`Get comments with specific forum`, async done => {
+	test(`Get comments with specific forum with api ${version?version:"default"}`, async done => {
 		let res = await request.get(`/api/${version}comments?thread=${idParams.thread.replace("+","%2B")}`);
 		expect(res.status).toBe(200);
 		expect(res.body.comments.length).toBe(3);
@@ -156,7 +156,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
-	test(`Get comments with specific user`, async done => {
+	test(`Get comments with specific user with api ${version?version:"default"}`, async done => {
 		let res = await request.get(`/api/${version}comments?user=${idParams.user.replace("+","%2B")}`);
 		expect(res.status).toBe(200);
 		expect(res.body.comments.length).toBe(1);
@@ -168,7 +168,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
-	test(`Search queries`, async done => {
+	test(`Search queries with api ${version?version:"default"}`, async done => {
 		let res = await request.get(`/api/${version}comments?search=Cabinda&search=1900`);
 
 		expect(res.status).toBe(200);
@@ -181,6 +181,56 @@ for(let i=-1;i<CONFIG.api.length;i++){
 
 		done();
 	});
+
+	test(`Search users by name with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}users?name=bap9`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.users.length).toBe(1);
+		expect(res.body.users[0]._id).toBe(1.3116457200976267e+48);
+
+		res = await request.get(`/api/${version}users?name=bap9&name=mrmoto`);
+		expect(res.status).toBe(200);
+		expect(res.body.users.length).toBe(2);
+
+
+		done();
+	});
+
+	test(`Search threads by title with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}threads?title=Skiing%20school%20-%20winter`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.threads.length).toBe(1);
+		expect(res.body.threads[0]._id).toBe(4.974947305360038e+47);
+
+		res = await request.get(`/api/${version}threads?title=can%20I%20travel%20back%20while%20my%20extension%20is%20in%20progress&title=Skiing%20school%20-%20winter`);
+		expect(res.status).toBe(200);
+		expect(res.body.threads.length).toBe(2);
+
+		done();
+	});
+
+	test(`Search threads by country with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}threads?country=Morocco`);
+		expect(res.status).toBe(200);
+
+		res = await request.get(`/api/${version}threads?country=Morocco&country=Angola`);
+		expect(res.status).toBe(200);
+
+		done();
+	});
+
+	test(`Search threads by subforum with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}threads?subforum=africa`);
+		expect(res.status).toBe(200);
+
+		res = await request.get(`/api/${version}threads?subforum=africa&subforum=America`);
+		expect(res.status).toBe(200);
+
+		done();
+	});
+
 
 
 
