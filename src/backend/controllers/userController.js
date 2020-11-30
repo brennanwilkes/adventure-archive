@@ -1,5 +1,6 @@
+
 const User = require('../../database/models/user.js');
-const {formatDoc, getDocs, getDoc, postDoc, buildRegexList} = require("./generalController");
+const {formatDoc, getDocs, getDoc, postDoc, buildRegexList, hash, link, getReqPath} = require("./generalController");
 
 const userParams = ["_id", "name"];
 
@@ -20,6 +21,11 @@ exports.getUsers = (req, res) => getDocs(
 	buildQuery(req)
 );
 
-exports.getUser = (req, res) => getDoc(req, res, User, (results,reqPath) => formatDoc(results, "user", userParams, reqPath))
+const getUser = (req, res) => getDoc(req, res, User, (results,reqPath) => formatDoc(results, "user", userParams, reqPath))
+exports.getUser = getUser;
 
-exports.postUser = (req, res) => postDoc(req, res);
+
+exports.postUser = (req, res) => postDoc(req, res, User, {name:req.body.name}, {
+	_id: hash(req.body.name),
+	name: req.body.name
+}, getUser);

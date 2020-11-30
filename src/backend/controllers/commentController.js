@@ -1,5 +1,9 @@
+const axios = require("axios");
+const moment = require("moment");
+
 const Comment = require('../../database/models/comment.js');
-const {formatDoc, getDocs, getDoc, postDoc, buildRegexList, getReqPath} = require("./generalController");
+const {formatDoc, getDocs, getDoc, postDoc, buildRegexList, getReqPath, hash} = require("./generalController");
+const {getThread} = require("./threadController");
 
 const commentParams = ["_id", "content", "position", "date", "threadId", "userId"];
 
@@ -19,7 +23,7 @@ const buildQuery = req => {
 	return query;
 }
 
-exports.getComments = (req, res) => {
+const getComments = (req, res) => {
 	const query = buildQuery(req);
 	if(req.query.groupByThread){
 
@@ -40,9 +44,7 @@ exports.getComments = (req, res) => {
 			res.send(formatDoc(results, "comment", commentParams, getReqPath(req)));
 		})
 		.catch(error => {
-			console.error(error)
-			res.status(500);
-			res.send(error);
+			res.status(500).send(error);
 		});
 
 	}
@@ -50,7 +52,63 @@ exports.getComments = (req, res) => {
 		return getDocs(req, res, Comment, (results,reqPath) => formatDoc(results, "comment", commentParams, reqPath), query);
 	}
 };
+exports.getComments = getComments;
 
-exports.getComment = (req, res) => getDoc(req, res, Comment, (results,reqPath) => formatDoc(results, "comment", commentParams, reqPath))
+const getComment = (req, res) => getDoc(req, res, Comment, (results,reqPath) => formatDoc(results, "comment", commentParams, reqPath))
+exports.getComment = getComment;
 
-exports.postComment = (req, res) => postDoc(req, res);
+exports.postComment = (req, res) => {
+
+	const user = req.body.user;
+	const comment = req.body.comment;
+	const threadId = req.body.threadId;
+
+	//10:22 UTC 13 Apr 2020
+	const date = moment().format("hh:mm [UTC] dd MMM YYYY").toString();
+
+	const reqCopy = req;
+	reqCopy.query = {
+		thread: threadId,
+		limit: 100000
+	};
+
+	const statusCallback = thisRes => code => {
+		if(code >= 300){
+			res.status(code);
+			thisRes.send = data => {
+				res.send(data)
+			};
+		}
+		return thisRes;
+	}
+
+	const mockResComments = {
+		status: statusCallback(this),
+		send: data => {
+			const pos = data.comments.length;
+
+			const mockResThread = {
+				status: statusCallback(this),
+				send: data => {
+					const threadTitle = data.threads[0].title;
+					const sanitySearch = {_id:hash(`${hash(user)}${date}${threadTitle}`)};
+					const dataToInsert = {
+						_id: hash(`${hash(user)}${date}${threadTitle}`),
+						userId: hash(user),
+						threadId: threadId,
+						date: date,
+						position: String(pos),
+						content: comment
+					}
+					postDoc(req, res, Comment, sanitySearch, dataToInsert, getComment);
+				}
+			}
+
+			reqCopy.query = {};
+			reqCopy.params = {id:data.comments[0].threadId};
+			getThread(reqCopy,mockResThread);
+		}
+	}
+
+	getComments(reqCopy,mockResComments);
+}

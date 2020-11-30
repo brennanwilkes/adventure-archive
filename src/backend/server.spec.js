@@ -91,7 +91,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 			expect(res.status >= 200 && res.status <= 299).toBe(true);
 
 			res = await request.post(`/api/${version}${endpoint}s`);
-			expect(res.status >= 200 && res.status <= 299).toBe(true);
+			expect(res.status).not.toBe(404);
 
 			done();
 		});
@@ -147,7 +147,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 	test(`Get comments with specific forum with api ${version?version:"default"}`, async done => {
 		let res = await request.get(`/api/${version}comments?thread=${idParams.thread.replace("+","%2B")}`);
 		expect(res.status).toBe(200);
-		expect(res.body.comments.length).toBe(3);
+		expect(res.body.comments.length).toBeGreaterThanOrEqual(4);
 
 		res = await request.get(`/api/${version}comments?thread=asdf`);
 		expect(res.status).toBe(422);
@@ -246,6 +246,54 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		res = await request.get(`/api/${version}comments?groupByThread=garbage`);
 		expect(res.status).toBe(422);
 
+		done();
+	});
+
+	test(`Post new user with api ${version?version:"default"}`, async done => {
+
+		let res = await request.post(`/api/${version}users`).send({name: 'TEST NAME TEST TEST TEST'});
+		expect(res.status===201 || res.status===200).toBeTruthy();
+
+		res = await request.post(`/api/${version}users`).send({name: 'bap9'});
+		expect(res.status).toBe(200);
+		expect(res.body.users.length).toBe(1);
+		expect(res.body.users[0].name).toBe("bap9");
+
+		res = await request.post(`/api/${version}users`);
+		expect(res.status).toBe(422)
+
+		res = await request.post(`/api/${version}users`).send({name:""});
+		expect(res.status).toBe(422)
+
+		done();
+	});
+
+	test(`Post new comment with api ${version?version:"default"}`, async done => {
+
+		let res = await request.post(`/api/${version}comments`);
+		expect(res.status).toBe(422);
+
+		res = await request.post(`/api/${version}comments`).send({
+			user: "DOESNOTEXIST",
+			comment:"Comment",
+			threadId: idParams.thread
+		});
+		expect(res.status).toBe(422);
+
+		res = await request.post(`/api/${version}comments`).send({
+			user: "TEST NAME TEST TEST TEST",
+			comment:"Comment",
+			threadId: `${idParams.thread}0`
+		});
+		expect(res.status).toBe(422);
+
+		res = await request.post(`/api/${version}comments`).send({
+			user: "TEST NAME TEST TEST TEST",
+			comment:"This is a test comment",
+			threadId: idParams.thread
+		});
+
+		expect(res.status===201 || res.status===200).toBeTruthy();
 
 		done();
 	});
