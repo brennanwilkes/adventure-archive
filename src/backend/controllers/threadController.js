@@ -6,16 +6,16 @@ const threadParams = ["_id", "title", "country", "subforum"];
 const buildQuery = req => {
 	let query = {};
 
-	if(req.query.title !== undefined || req.query.country !== undefined || req.query.subforum !== undefined){
+	if(req.query.title || req.query.country || req.query.subforum || req.query.search){
 		query.$and = [];
 	}
-	if(req.query.title !== undefined){
+	if(req.query.title){
 		query.$and.push({$or:buildRegexList(req.query.title,"title")});
 	}
-	if(req.query.country !== undefined){
+	if(req.query.country){
 		query.$and.push({$or:buildRegexList(req.query.country,"country")});
 	}
-	if(req.query.subforum !== undefined){
+	if(req.query.subforum){
 		query.$and.push({$or:buildRegexList(req.query.subforum,"subforum")});
 	}
 

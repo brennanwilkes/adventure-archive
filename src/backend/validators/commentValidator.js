@@ -16,5 +16,10 @@ exports.getCommentValidator = [
 		link("self",`${getReqPath(req)}/comments?user=9.813252315982051e%2B47`)
 	]),
 	query("search").if(query("search").exists())
-		.customSanitizer(forceArraySanitizer)
+		.customSanitizer(forceArraySanitizer),
+	query("groupByThread").if(query("groupByThread").exists()).trim().isBoolean(),
+	validationErrorHandlerFactory(req => [
+		link("self",`${getReqPath(req)}/comments?groupByThread=true`)
+	]),
+
 ];

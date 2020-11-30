@@ -231,8 +231,24 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
+	test(`Search comments with aggregation pipeline, limiting comments per thread to 1 with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}comments?search=angola%20consulate&search=Matadi&groupByThread=true`);
+
+		expect(res.status).toBe(200);
+		expect(res.body.comments.length).toBe(1);
+		expect(res.body.comments[0].threadId).toBe(4.9925364431161935e+47);
+
+		res = await request.get(`/api/${version}comments?search=angola%20consulate&search=Matadi`);
+		expect(res.status).toBe(200);
+		expect(res.body.comments.length).toBe(2);
+		expect(res.body.comments[0].threadId).toBe(4.9925364431161935e+47);
+
+		res = await request.get(`/api/${version}comments?groupByThread=garbage`);
+		expect(res.status).toBe(422);
 
 
+		done();
+	});
 
 
 }
