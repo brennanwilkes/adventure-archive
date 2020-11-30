@@ -64,7 +64,7 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 100) => {
+exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 10) => {
 
 	if(req.query.limit){
 		limit = parseInt(req.query.limit);
@@ -103,6 +103,6 @@ exports.postDoc = (req,res) => {
 
 exports.buildRegexList = (params,field) => params.map(q => new RegExp(q,'i')).map(r => {
 	const obj = {};
-	obj[field] = {$in : r};
+	obj[field] = {$in : [r]};
 	return obj;
 });
