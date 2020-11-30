@@ -100,3 +100,9 @@ exports.getDoc = (req, res, Model, formatter) => {
 exports.postDoc = (req,res) => {
 	res.send("todo");
 }
+
+exports.buildRegexList = (params,field) => params.map(q => new RegExp(q,'i')).map(r => {
+	const obj = {};
+	obj[field] = {$in : r};
+	return obj;
+});

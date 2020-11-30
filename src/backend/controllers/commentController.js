@@ -1,5 +1,5 @@
 const Comment = require('../../database/models/comment.js');
-const {formatDoc, getDocs, getDoc, postDoc} = require("./generalController");
+const {formatDoc, getDocs, getDoc, postDoc, buildRegexList} = require("./generalController");
 
 const commentParams = ["_id", "content", "position", "date", "threadId", "userId"];
 
@@ -13,12 +13,7 @@ const buildQuery = req => {
 		query.userId = req.query.user;
 	}
 	if(req.query.search !== undefined){
-		query.$and = req.query.search.map(
-						q => new RegExp(q)
-					).map(
-						r => {
-							return {content:{$in : r}}
-						});
+		query.$and = buildRegexList(req.query.search,"content");
 	}
 	return query;
 }

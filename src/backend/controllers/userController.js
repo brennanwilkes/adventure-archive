@@ -1,5 +1,5 @@
 const User = require('../../database/models/user.js');
-const {formatDoc, getDocs, getDoc, postDoc} = require("./generalController");
+const {formatDoc, getDocs, getDoc, postDoc, buildRegexList} = require("./generalController");
 
 const userParams = ["_id", "name"];
 
@@ -7,12 +7,7 @@ const buildQuery = req => {
 	let query = {};
 
 	if(req.query.name !== undefined){
-		query.$or = req.query.name.map(
-						q => new RegExp(q)
-					).map(
-						r => {
-							return {name:{$in : r}}
-						});
+		query.$or = buildRegexList(req.query.name,"name");
 	}
 	return query;
 }
