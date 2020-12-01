@@ -32,7 +32,6 @@ const addLinks = (doc, type, reqPath) => {
 	}
 	else if(type==="user"){
 		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
-		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("Create new user",`${reqPath}/users`,"POST"));
 	}
 	else{
