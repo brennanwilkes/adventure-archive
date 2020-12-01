@@ -27,20 +27,24 @@ const addLinks = (doc, type, reqPath) => {
 
 	doc.links = [link("self",`${reqPath}/${type}s/${doc._id}`)];
 	if(type==="thread"){
-		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${String(doc._id).replace("+","%2B")}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${encodeURIComponent(String(doc._id))}`));
+		doc.links.push(link("comments by country",`${reqPath}/comments?country=${encodeURIComponent(String(doc.country))}`));
+		doc.links.push(link("Post new comment",`${reqPath}/comments`,"POST"));
 	}
 	else if(type==="user"){
-		doc.links.push(link("comments by user",`${reqPath}/comments?user=${String(doc._id).replace("+","%2B")}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
+		doc.links.push(link("Create new user",`${reqPath}/users`,"POST"));
 	}
 
 	if(doc.threadId){
 		doc.links.push(link("thread",`${reqPath}/threads/${doc.threadId}`));
-		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${String(doc.threadId).replace("+","%2B")}`));
+		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${encodeURIComponent(String(doc.threadId))}`));
 	}
 
 	if(doc.userId){
 		doc.links.push(link("user",`${reqPath}/users/${doc.userId}`));
-		doc.links.push(link("comments by user",`${reqPath}/comments?user=${String(doc.userId).replace("+","%2B")}`));
+		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc.userId))}`));
 	}
 
 	return doc;
