@@ -33,13 +33,13 @@ const testComments = comments => comments.forEach(comment => testDocumentIntegri
 	"threadId",
 	"userId",
 	"links"
-], 5));
+], 6));
 
 const testUsers = users => users.forEach(user => testDocumentIntegrity(user, [
 	"_id",
 	"name",
 	"links"
-], 4));
+], 3));
 
 const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(thread, [
 	"_id",
