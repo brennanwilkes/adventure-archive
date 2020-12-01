@@ -29,12 +29,14 @@ const addLinks = (doc, type, reqPath) => {
 	if(type==="thread"){
 		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("comments by country",`${reqPath}/comments?country=${encodeURIComponent(String(doc.country))}`));
-		doc.links.push(link("Post new comment",`${reqPath}/comments`,"POST"));
 	}
 	else if(type==="user"){
 		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("Create new user",`${reqPath}/users`,"POST"));
+	}
+	else{
+		doc.links.push(link("Post new comment",`${reqPath}/comments`,"POST"));
 	}
 
 	if(doc.threadId){

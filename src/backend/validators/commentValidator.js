@@ -25,9 +25,9 @@ exports.getCommentValidator = [
 
 	query("country").if(query("country").exists())
 		.customSanitizer(forceArraySanitizer),
+
 	query("subforum").if(query("subforum").exists())
 		.customSanitizer(forceArraySanitizer),
-
 
 	query("groupByThread").if(query("groupByThread").exists()).trim().isBoolean(),
 	validationErrorHandlerFactory(req => [
