@@ -249,6 +249,22 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
+	test(`Search comments with country and subforum pipeline with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}comments?country=canada`);
+		expect(res.status).toBe(200);
+
+		res = await request.get(`/api/${version}comments?subforum=africa&country=angola`);
+		expect(res.status).toBe(200);
+
+		res = await request.get(`/api/${version}comments?country=canada&country=angola`);
+		expect(res.status).toBe(200);
+
+		res = await request.get(`/api/${version}comments?subforum=africa`);
+		expect(res.status).toBe(200);
+
+		done();
+	});
+
 	test(`Post new user with api ${version?version:"default"}`, async done => {
 
 		let res = await request.post(`/api/${version}users`).send({name: 'TEST NAME TEST TEST TEST'});

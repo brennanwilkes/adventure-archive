@@ -23,6 +23,12 @@ exports.getCommentValidator = [
 	query("search").if(query("search").exists())
 		.customSanitizer(forceArraySanitizer),
 
+	query("country").if(query("country").exists())
+		.customSanitizer(forceArraySanitizer),
+	query("subforum").if(query("subforum").exists())
+		.customSanitizer(forceArraySanitizer),
+
+
 	query("groupByThread").if(query("groupByThread").exists()).trim().isBoolean(),
 	validationErrorHandlerFactory(req => [
 		link("self",`${getReqPath(req)}/comments?groupByThread=true`)

@@ -7,6 +7,66 @@ const {getThread} = require("./threadController");
 
 const commentParams = ["_id", "content", "position", "date", "threadId", "userId"];
 
+
+const buildPipeline = (req,query) => {
+
+	const queryPipe = [{$match: query}];
+
+	const groupPipe = [
+		{$group: {
+			_id: "$threadId",
+			doc: { "$first": "$$ROOT" }
+		}},
+		{$replaceRoot: {
+			newRoot: "$doc"
+		}}
+	];
+
+	const threadPipe = [
+		{ $lookup: {
+			from: "threads",
+			let: {
+				threadId: "$threadId"
+			},
+			pipeline: [
+				{ $match: {
+					$expr: { $and: [
+						{ $eq: [ "$_id", "$$threadId" ] }
+					]}
+				}}
+			],
+			as: "thread"
+		}}
+	];
+
+	let pipeline = [...queryPipe];
+
+	if(req.query.groupByThread){
+		pipeline = [...pipeline, ...groupPipe];
+	}
+	if(req.query.country || req.query.subforum){
+		pipeline = [...pipeline, ...threadPipe];
+		if(req.query.country){
+			pipeline = [...pipeline,
+				{$match: {
+					$or: buildRegexList(req.query.country,"thread.country")
+				}}
+			];
+		}
+
+		if(req.query.subforum){
+			pipeline = [...pipeline,
+				{$match: {
+					$or: buildRegexList(req.query.subforum,"thread.subforum")
+				}}
+			];
+		}
+	}
+
+	return pipeline;
+}
+
+
 const buildQuery = req => {
 	let query = {};
 
@@ -25,20 +85,11 @@ const buildQuery = req => {
 
 const getComments = (req, res) => {
 	const query = buildQuery(req);
-	if(req.query.groupByThread){
+	if(req.query.groupByThread || req.query.country || req.query.subforum){
 
 		const limit = (req.query.limit ? parseInt(req.query.limit) : 10)
 
-		Comment.aggregate([
-			{$match: query},
-			{$group: {
-				_id: "$threadId",
-				doc: { "$first": "$$ROOT" }
-			}},
-			{$replaceRoot: {
-				newRoot: "$doc"
-			}}
-		])
+		Comment.aggregate(buildPipeline(req, query))
 		.limit(limit)
 		.then(results => {
 			res.send(formatDoc(results, "comment", commentParams, getReqPath(req)));
