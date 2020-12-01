@@ -39,7 +39,7 @@ const testUsers = users => users.forEach(user => testDocumentIntegrity(user, [
 	"_id",
 	"name",
 	"links"
-], 2));
+], 4));
 
 const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(thread, [
 	"_id",
@@ -47,7 +47,7 @@ const testThreads = threads => threads.forEach(thread => testDocumentIntegrity(t
 	"country",
 	"title",
 	"links"
-], 2));
+], 4));
 
 testDocuments = {
 	comments : testComments,
