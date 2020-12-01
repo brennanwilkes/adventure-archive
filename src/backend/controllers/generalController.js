@@ -29,6 +29,7 @@ const addLinks = (doc, type, reqPath) => {
 	if(type==="thread"){
 		doc.links.push(link("comments by thread",`${reqPath}/comments?thread=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("comments by country",`${reqPath}/comments?country=${encodeURIComponent(String(doc.country))}`));
+		doc.links.push(link("comments by subforum",`${reqPath}/comments?subforum=${encodeURIComponent(String(doc.subforum))}`));
 	}
 	else if(type==="user"){
 		doc.links.push(link("comments by user",`${reqPath}/comments?user=${encodeURIComponent(String(doc._id))}`));
