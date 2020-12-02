@@ -161,7 +161,7 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		expect(res.status).toBe(200);
 		expect(res.body.comments.length).toBe(1);
 
-		res = await request.get(`/api/${version}comments?user=asdf`);
+		res = await request.get(`/api/${version}comments?user=asdf&limit=1`);
 		expect(res.status).toBe(422);
 
 
@@ -212,20 +212,20 @@ for(let i=-1;i<CONFIG.api.length;i++){
 	});
 
 	test(`Search threads by country with api ${version?version:"default"}`, async done => {
-		let res = await request.get(`/api/${version}threads?country=Morocco`);
+		let res = await request.get(`/api/${version}threads?country=Morocco&limit=1`);
 		expect(res.status).toBe(200);
 
-		res = await request.get(`/api/${version}threads?country=Morocco&country=Angola`);
+		res = await request.get(`/api/${version}threads?country=Morocco&country=Angola&limit=1`);
 		expect(res.status).toBe(200);
 
 		done();
 	});
 
 	test(`Search threads by subforum with api ${version?version:"default"}`, async done => {
-		let res = await request.get(`/api/${version}threads?subforum=africa`);
+		let res = await request.get(`/api/${version}threads?subforum=africa&limit=1`);
 		expect(res.status).toBe(200);
 
-		res = await request.get(`/api/${version}threads?subforum=africa&subforum=America`);
+		res = await request.get(`/api/${version}threads?subforum=africa&subforum=America&limit=1`);
 		expect(res.status).toBe(200);
 
 		done();
@@ -250,16 +250,16 @@ for(let i=-1;i<CONFIG.api.length;i++){
 	});
 
 	test(`Search comments with country and subforum pipeline with api ${version?version:"default"}`, async done => {
-		let res = await request.get(`/api/${version}comments?country=canada`);
+		let res = await request.get(`/api/${version}comments?country=canada&limit=1`);
 		expect(res.status).toBe(200);
 
-		res = await request.get(`/api/${version}comments?subforum=africa&country=angola`);
+		res = await request.get(`/api/${version}comments?subforum=africa&country=angola&limit=1`);
 		expect(res.status).toBe(200);
 
-		res = await request.get(`/api/${version}comments?country=canada&country=angola`);
+		res = await request.get(`/api/${version}comments?country=canada&country=angola&limit=1`);
 		expect(res.status).toBe(200);
 
-		res = await request.get(`/api/${version}comments?subforum=africa`);
+		res = await request.get(`/api/${version}comments?subforum=africa&limit=1`);
 		expect(res.status).toBe(200);
 
 		done();
