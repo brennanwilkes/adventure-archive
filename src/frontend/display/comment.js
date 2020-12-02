@@ -22,13 +22,13 @@ class Comment extends React.Component{
 
 		this.state.links.forEach((link, i) => {
 			if(link.rel === "thread" && link.action === "GET"){
-				axios.get(`http://${link.href}`)
+				axios.get(link.href)
 					.then(threadRes => {
 						if(this._ismounted) this.setState({threadData:threadRes.data.threads[0]})
 					}).catch(error=>{console.error(error)});
 			}
 			else if(link.rel === "user" && link.action === "GET"){
-				axios.get(`http://${link.href}`)
+				axios.get(link.href)
 					.then(userRes => {
 						if(this._ismounted) this.setState({userData:userRes.data.users[0]})
 					}).catch(error=>{});
