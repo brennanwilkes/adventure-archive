@@ -1,18 +1,99 @@
 /* Brennan Wilkes */
 
 .comment > div{
+	position: relative;
 	max-height: 25vh;
-	overflow-y: hidden;
-	border: 2px solid black;
 }
 
 .comment p{
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: scroll;
 	max-height: 100%;
 	margin: 0;
 	padding: 0;
 }
 
+.comment p::-webkit-scrollbar {
+	display: none;
+}
+
+.comment p {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+
 .highlight{
 	color: red;
+}
+
+.floatingHeader{
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	left: -4vw;
+	top: -4vh;
+	transition: transform 0.5s;
+	-webkit-transition: transform 0.5s;
+	position: absolute;
+	z-index: 2;
+
+	border-radius: 10px;
+	border: 2px solid #456b86;
+}
+
+.floatingFooter{
+	position: absolute;
+	display: inline-flex;
+	flex-direction: column;
+	text-align: right;
+	right: -4vw;
+	bottom: -4vh;
+}
+
+.floatingFooter > div{
+	transition: transform 0.5s;
+	-webkit-transition: transform 0.5s;
+	z-index: 2;
+
+	border-radius: 10px;
+	border: 2px solid #456b86;
+}
+
+.country, .title, .user, .subforum{
+	cursor: pointer;
+}
+
+.country::after{
+	content: " | ";
+	margin-left: 0.5vw;
+	margin-right: 0.5vw;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.country:hover, .subforum:hover{
+	color: #c8b88e !important;
+}
+.country:active, .subforum:active{
+	color: #947f48 !important;
+}
+
+.country::after:hover, .country:hover::after{
+	cursor: default;
+	color: #d9ceb1 !important;
+}
+
+
+.title:hover, .user:hover{
+	color: #4eabca !important;
+}
+
+.title:active, .user:active{
+	color: #eff7fa !important;
+}
+
+.floatingHeader:hover, .floatingFooter > div:not(.date):hover{
+	transform: scale(1.1);
+	z-index: 3;
 }
