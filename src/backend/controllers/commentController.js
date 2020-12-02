@@ -2,6 +2,7 @@ const axios = require("axios");
 const moment = require("moment");
 
 const Comment = require('../../database/models/comment.js');
+const {mongoose} = require("../../database/connection.js");
 const {formatDoc, getDocs, getDoc, postDoc, buildRegexList, getReqPath, hash} = require("./generalController");
 const {getThread} = require("./threadController");
 
@@ -87,7 +88,7 @@ const getComments = (req, res) => {
 	const query = buildQuery(req);
 	if(req.query.groupByThread || req.query.country || req.query.subforum){
 
-		const limit = (req.query.limit ? parseInt(req.query.limit) : 10)
+		const limit = (req.query.limit ? parseInt(req.query.limit) : 250)
 
 		Comment.aggregate(buildPipeline(req, query))
 		.limit(limit)
@@ -95,7 +96,15 @@ const getComments = (req, res) => {
 			res.send(formatDoc(results, "comment", commentParams, getReqPath(req)));
 		})
 		.catch(error => {
-			res.status(500).send(error);
+			if(error.codeName === "MaxTimeMSExpired"){
+				res.status(200).send({
+					comments:[],
+					errors:["Maximum timeout exceeded. Likely no results"]
+				});
+			}
+			else{
+				res.status(500).send(error);
+			}
 		});
 
 	}

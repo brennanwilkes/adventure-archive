@@ -1,0 +1,143 @@
+
+/*------------------------------------
+- COLOR jetsam
+------------------------------------*/
+.alert-jetsam {
+	color: #3085a1;
+	background-color: #113108104;
+	border-color: #103101100;
+}
+
+.alert-jetsam hr {
+	border-top-color: #eff7fa;
+}
+
+.alert-jetsam .alert-link {
+	color: #24647a;
+}
+
+.badge-jetsam {
+	color: #212529;
+	background-color: #76bed6;
+}
+
+.badge-jetsam[href]:hover, .badge-jetsam[href]:focus {
+	color: #212529;
+	background-color: #4eabca;
+}
+
+.bg-jetsam {
+	background-color: #76bed6 !important;
+}
+
+a.bg-jetsam:hover, a.bg-jetsam:focus,
+button.bg-jetsam:hover,
+button.bg-jetsam:focus {
+	background-color: #4eabca !important;
+}
+
+.border-jetsam {
+	border-color: #76bed6 !important;
+}
+
+.btn-jetsam {
+	color: #212529;
+	background-color: #76bed6;
+	border-color: #76bed6;
+}
+
+.btn-jetsam:hover {
+	color: #212529;
+	background-color: #5ab0cd;
+	border-color: #4eabca;
+}
+
+.btn-jetsam:focus, .btn-jetsam.focus {
+	box-shadow: 0 0 0 0.2rem rgba(118, 190, 214, 0.5);
+}
+
+.btn-jetsam.disabled, .btn-jetsam:disabled {
+	color: #212529;
+	background-color: #76bed6;
+	border-color: #76bed6;
+}
+
+.btn-jetsam:not(:disabled):not(.disabled):active, .btn-jetsam:not(:disabled):not(.disabled).active, .show > .btn-jetsam.dropdown-toggle {
+	color: #212529;
+	background-color: #4eabca;
+	border-color: #42a5c6;
+}
+
+.btn-jetsam:not(:disabled):not(.disabled):active:focus, .btn-jetsam:not(:disabled):not(.disabled).active:focus, .show > .btn-jetsam.dropdown-toggle:focus {
+	box-shadow: 0 0 0 0.2rem rgba(118, 190, 214, 0.5);
+}
+
+.btn-outline-jetsam {
+	color: #76bed6;
+	background-color: transparent;
+	border-color: #76bed6;
+}
+
+.btn-outline-jetsam:hover {
+	color: #212529;
+	background-color: #76bed6;
+	border-color: #76bed6;
+}
+
+.btn-outline-jetsam:focus, .btn-outline-jetsam.focus {
+	box-shadow: 0 0 0 0.2rem rgba(118, 190, 214, 0.5);
+}
+
+.btn-outline-jetsam.disabled, .btn-outline-jetsam:disabled {
+	color: #76bed6;
+	background-color: transparent;
+}
+
+.btn-outline-jetsam:not(:disabled):not(.disabled):active, .btn-outline-jetsam:not(:disabled):not(.disabled).active, .show > .btn-outline-jetsam.dropdown-toggle {
+	color: #212529;
+	background-color: #76bed6;
+	border-color: #76bed6;
+}
+
+.btn-outline-jetsam:not(:disabled):not(.disabled):active:focus, .btn-outline-jetsam:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-jetsam.dropdown-toggle:focus {
+	box-shadow: 0 0 0 0.2rem rgba(118, 190, 214, 0.5);
+}
+
+.list-group-item-jetsam {
+	color: #3085a1;
+	background-color: #103101100;
+}
+
+.list-group-item-jetsam.list-group-item-action:hover, .list-group-item-jetsam.list-group-item-action:focus {
+	color: #3085a1;
+	background-color: #eff7fa;
+}
+
+.list-group-item-jetsam.list-group-item-action.active {
+	color: #212529;
+	background-color: #3085a1;
+	border-color: #3085a1;
+}
+
+.table-jetsam,
+.table-jetsam > th,
+.table-jetsam > td {
+	background-color: #103101100;
+}
+
+.table-hover .table-jetsam:hover {
+	background-color: #eff7fa;
+}
+
+.table-hover .table-jetsam:hover > td,
+.table-hover .table-jetsam:hover > th {
+	background-color: #eff7fa;
+}
+
+.text-jetsam {
+	color: #76bed6 !important;
+}
+
+a.text-jetsam:hover, a.text-jetsam:focus {
+	color: #4eabca !important;
+}

@@ -1,0 +1,21 @@
+/* Brennan Wilkes */
+
+.loadingIcon{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	will-change: transform;
+}
+
+.loadingIcon:active, .loadingIcon, .loadingIcon:focus{
+	outline: none;
+	box-shadow: none;
+}
+
+.loadingIcon:active{
+	color: #000;
+}
+
+.loadingIcon:hover{
+	cursor: default;
+}

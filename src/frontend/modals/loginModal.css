@@ -1,0 +1,16 @@
+.btn{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.modal .btn, .modal h5{
+	width: 100%;
+	text-align: center;
+}
+
+.modal h5{
+	font-family: 'Muli', sans-serif;
+	text-transform: uppercase;
+	font-weight: normal;
+}

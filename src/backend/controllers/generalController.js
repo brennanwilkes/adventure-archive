@@ -1,6 +1,7 @@
 const shasum = require("shasum");
 
 const Comment = require('../../database/models/comment.js');
+const {mongoose} = require("../../database/connection.js");
 
 const ensureArray = data => (Array.isArray(data) ? data : [data]);
 const hash = data => parseInt(shasum(`${data}\n`),16);
@@ -74,7 +75,7 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 10) => {
+exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 250) => {
 
 	if(req.query.limit){
 		limit = parseInt(req.query.limit);
