@@ -1,6 +1,7 @@
 const shasum = require("shasum");
 
 const Comment = require('../../database/models/comment.js');
+const {mongoose} = require("../../database/connection.js");
 
 const ensureArray = data => (Array.isArray(data) ? data : [data]);
 const hash = data => parseInt(shasum(`${data}\n`),16);
