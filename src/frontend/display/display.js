@@ -16,7 +16,11 @@ class Display extends React.Component{
 	render(){
 		return <>
 			<div id="display" className="container-fluid px-0">{
-				this.props.comments.map(comment => <Comment key={comment._id} data={comment} />)
+				this.props.comments.map(comment => <Comment key={comment._id} data={comment} viewThreadCallback={this.props.viewThreadCallback} queryCommentsCallback={(event)=>{
+					$("#advancedOptions").removeClass("show");
+					this.props.advancedSearchToggleCallback();
+					this.props.queryCommentsCallback(event);
+				}}/>)
 			}</div>
 		</>
 	}

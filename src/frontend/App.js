@@ -27,6 +27,8 @@ class App extends React.Component {
 		this.getComments = this.getComments.bind(this);
 		this.userClick = this.userClick.bind(this);
 		this.getUser = this.getUser.bind(this);
+		this.queueGetComments = this.queueGetComments.bind(this);
+		this.viewThread = this.viewThread.bind(this);
 
 		this.state = {
 			comments: [],
@@ -77,6 +79,15 @@ class App extends React.Component {
 		}).catch(error => {});
 	}
 
+	queueGetComments(query){
+		if(this.state.queryLock){
+			this.setState({nextQuery:query});
+		}
+		else{
+			this.getComments(query);
+		}
+	}
+
 	getUser(user = ""){
 		axios.get(`${window.location.href}${API}users?name=${user}`).then(res => {
 			this.setState({
@@ -90,16 +101,13 @@ class App extends React.Component {
 		@param {string} name Name of drink to search for
 	*/
 	search(query){
-		this.getComments(`search=${query}&limit=${DEFAULT_LIMIT}`);
-		this.setState({
-			threadTitle: undefined
-		});
+		this.queueGetComments(`search=${query}&limit=${DEFAULT_LIMIT}`);
 	}
 
 
 	userClick(){
 		if(this.state.user){
-			this.getComments(`user=${encodeURIComponent(this.state.user._id)}`);
+			this.queueGetComments(`user=${encodeURIComponent(this.state.user._id)}`);
 		}
 		else{
 			$('#LoginModal').modal();
@@ -129,18 +137,19 @@ class App extends React.Component {
 			querySearch: "search",
 			countrySearch: "country",
 			subforumSearch: "subforum",
-			limit: "limit"
+			limit: "limit",
+			groupByThread: true
 		}
 
 		const searchQuery = Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1);
 
-		if(this.state.queryLock){
-			this.setState({nextQuery:searchQuery});
-		}
-		else{
-			this.getComments(searchQuery);
-		}
+		this.queueGetComments(searchQuery);
+	}
 
+	viewThread(thread){
+		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`);
+		this.setState({threadTitle:thread.title});
+		console.log(thread);
 	}
 
 	render() {
@@ -152,7 +161,11 @@ class App extends React.Component {
 				userCallback={this.userClick}
 				user={this.state.user} />
 
-			<Display comments={this.state.comments} />
+			<Display
+				comments={this.state.comments}
+				queryCommentsCallback={this.queueGetComments}
+				advancedSearchToggleCallback={this.advancedSearchToggle}
+				viewThreadCallback={this.viewThread} />
 			<LoginModal loginCallback={name => this.getUser(name)} />
 		</>;
 	}
