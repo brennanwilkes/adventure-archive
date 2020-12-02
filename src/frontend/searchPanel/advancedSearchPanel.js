@@ -6,6 +6,7 @@ import "../bootstrap-import.js";
 
 import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 import MultiInput from "./multiInput/multiInput.js";
+import RangeSlider from "./rangeSlider/rangeSlider.js";
 
 /**
 	Collapsable advanced search pannel with all the parameters required to search for drinks.
@@ -45,12 +46,12 @@ class AdvancedSearchPannel extends React.Component{
 		["querySearch","countrySearch","subforumSearch"].forEach((search, i) => {
 
 			query[search] = $(`.${search}`).toArray().map(elem => encodeURIComponent(elem.value));
-
 			if(event && event.dropId === search){
 				query[search] = query[search].splice(event,1);
 			}
-
 		});
+
+		query.limit = [Math.max($("#limitSlider")[0].value * 5, 1)];
 
 		this.props.callback(query);
 
@@ -95,6 +96,17 @@ class AdvancedSearchPannel extends React.Component{
 							callback={this.updateSubmit}
 							label="Sub-Forum"
 							key="subforumSearch" />
+					</div>
+				</div>
+				<div className="row py-2 justify-content-md-center">
+					<div className="col-md-9">
+						<RangeSlider
+							id="limitSlider"
+							label="Max Results"
+							onChange={this.updateSubmit}
+							scale={10}
+							default={5}
+							outputMultipler={5} />
 					</div>
 				</div>
 			</form>

@@ -4,26 +4,19 @@
 import React from "react";
 import "../bootstrap-import.js";
 
-class Display extends React.Component{
+import Comment from "./comment.js";
 
-	/**
-		Binds methods and initializes state
-		@param {any[]} props
-	*/
-	constructor(props){
-		super(props);
-	}
+class Display extends React.Component{
 
 	componentDidMount(){
 		$("#display").css("marginTop","7.5%");
 	}
 
+
 	render(){
 		return <>
-			<div id="display">{
-				this.props.comments.map(comment => (
-					<p key={comment._id} >{comment.content}</p>
-				))
+			<div id="display" className="container-fluid px-0">{
+				this.props.comments.map(comment => <Comment key={comment._id} data={comment} />)
 			}</div>
 		</>
 	}

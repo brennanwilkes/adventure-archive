@@ -5,7 +5,7 @@ import React from "react";
 import "../bootstrap-import.js";
 import { FaWindowClose } from "react-icons/fa";
 
-import "./LoginModal.css";
+import "./loginModal.css";
 import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 
 class LoginModal extends React.Component{
@@ -16,7 +16,7 @@ class LoginModal extends React.Component{
 				<div className="modal-dialog modal-dialog-centered" role="document">
 					<div className="modal-content">
 						<div className="modal-header">
-							<h5 className="h2 modal-title text-mariana" id="LoginModal">Adventure Archive</h5>
+							<h5 className="h2 modal-title text-mariana">Adventure Archive</h5>
 								</div>
 									<div className="modal-body py-4">
 										<FloatingLabel

@@ -22,7 +22,7 @@ class Search extends React.Component{
 	*/
 	render(){
 		return <>
-			<form className="form-inline p-0 mx-3" onSubmit={event => {
+			<form className="form-inline p-0 mx-3 search" onSubmit={event => {
 				event.preventDefault();
 				$(event.target).children().blur();
 			}}>

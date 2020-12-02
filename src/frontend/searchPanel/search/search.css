@@ -8,3 +8,10 @@
 	margin-left: 0;
 	margin-right: 0;
 }
+
+@media (max-width: 768px) {
+
+	.search .floating-label{
+		width: 100%;
+	}
+}

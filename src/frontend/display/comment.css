@@ -1,0 +1,18 @@
+/* Brennan Wilkes */
+
+.comment > div{
+	max-height: 25vh;
+	overflow-y: hidden;
+	border: 2px solid black;
+}
+
+.comment p{
+	overflow: hidden;
+	max-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.highlight{
+	color: red;
+}

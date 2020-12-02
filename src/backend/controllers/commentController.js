@@ -87,7 +87,7 @@ const getComments = (req, res) => {
 	const query = buildQuery(req);
 	if(req.query.groupByThread || req.query.country || req.query.subforum){
 
-		const limit = (req.query.limit ? parseInt(req.query.limit) : 10)
+		const limit = (req.query.limit ? parseInt(req.query.limit) : 250)
 
 		Comment.aggregate(buildPipeline(req, query))
 		.limit(limit)

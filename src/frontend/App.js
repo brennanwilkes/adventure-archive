@@ -7,7 +7,8 @@ import Display from "./display/display.js";
 import LoginModal from "./modals/loginModal.js";
 import "./index.css";
 
-const API = "api/v0.0.1/"
+const API = "api/v0.0.1/";
+const DEFAULT_LIMIT = 25;
 
 class App extends React.Component {
 
@@ -31,7 +32,7 @@ class App extends React.Component {
 			user: undefined
 		}
 
-		this.getComments();
+		this.getComments(`limit=${DEFAULT_LIMIT}`);
 	}
 
 
@@ -63,7 +64,7 @@ class App extends React.Component {
 		@param {string} name Name of drink to search for
 	*/
 	search(query){
-		this.getComments(`search=${query}`);
+		this.getComments(`search=${query}&limit=${DEFAULT_LIMIT}`);
 		this.setState({
 			threadTitle: undefined
 		});
@@ -101,7 +102,8 @@ class App extends React.Component {
 		const trans = {
 			querySearch: "search",
 			countrySearch: "country",
-			subforumSearch: "subforum"
+			subforumSearch: "subforum",
+			limit: "limit"
 		}
 
 		this.getComments(Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1));

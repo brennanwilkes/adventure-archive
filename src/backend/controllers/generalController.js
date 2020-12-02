@@ -74,7 +74,7 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 }
 
-exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 10) => {
+exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 250) => {
 
 	if(req.query.limit){
 		limit = parseInt(req.query.limit);
