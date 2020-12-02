@@ -5,6 +5,7 @@ import axios from "axios";
 import Navigation from "./navigation/navigation.js";
 import Display from "./display/display.js";
 import LoginModal from "./modals/loginModal.js";
+import ThreadModal from "./modals/threadModal.js";
 import "./index.css";
 
 const API = "api/v0.0.1/";
@@ -149,7 +150,7 @@ class App extends React.Component {
 	viewThread(thread){
 		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`);
 		this.setState({threadTitle:thread.title});
-		console.log(thread);
+		$('#threadModal').modal();
 	}
 
 	render() {
@@ -167,6 +168,7 @@ class App extends React.Component {
 				advancedSearchToggleCallback={this.advancedSearchToggle}
 				viewThreadCallback={this.viewThread} />
 			<LoginModal loginCallback={name => this.getUser(name)} />
+			<ThreadModal title={this.state.threadTitle} comments={this.state.comments} />
 		</>;
 	}
 }

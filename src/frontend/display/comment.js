@@ -4,6 +4,7 @@
 import React from "react";
 import "../bootstrap-import.js";
 import axios from "axios";
+import unescape from "unescape";
 
 import "./comment.css";
 
@@ -62,12 +63,12 @@ class Comment extends React.Component{
 								}
 							}}
 							className="title text-jetsam h6 mb-0">{
-								(this.state.threadData ? this.state.threadData.title: "")
+								(this.state.threadData ? unescape(this.state.threadData.title): "")
 						}</div>
 					</div>
-					<p>
-						{this.state.content}
-					</p>
+					<p>{
+						unescape(this.state.content)
+					}</p>
 					<div className="floatingFooter mt-2 ml-2 px-2 py-1">
 						<div
 							onClick={(event)=>{
