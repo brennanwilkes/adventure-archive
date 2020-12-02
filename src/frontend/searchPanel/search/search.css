@@ -1,0 +1,10 @@
+/* Brennan Wilkes */
+
+.form-inline{
+	display: flex;
+}
+
+.container-fluid .row{
+	margin-left: 0;
+	margin-right: 0;
+}
