@@ -24,8 +24,8 @@ class Navigation extends React.Component{
 	render(){
 		return <>
 			<div className="fixed-top" id="nav-wrapper">
-				<nav className="navbar navbar-expand-md navbar-dark bg-dark py-3">
-					<a className="navbar-brand ml-3 nav-brand-item" href=".">Adventure Archive</a>
+				<nav className="navbar navbar-expand-md navbar-dark text-sandy bg-mariana py-3">
+					<a className="navbar-brand ml-3 nav-brand-item text-sandy" href="."><h1 className="mb-0">Adventure Archive</h1></a>
 					<button className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarCollapse" onClick={event => {
 						$("#advancedOptions").removeClass("show");
 						this.props.advancedSearchToggleCallback();
@@ -34,8 +34,11 @@ class Navigation extends React.Component{
 					</button>
 					<div className="collapse navbar-collapse" id="navbarCollapse">
 						<ul className="mr-3 ml-3 navbar-nav mr-auto">
-							<li className="nav-item active">
-								<a className="nav-link">Login</a>
+							<li className="nav-item active h3 mb-0">
+								<a
+									id="userButton"
+									className="nav-link text-sandy mb-0"
+									onClick={this.props.userCallback}>{this.props.user ? this.props.user.name : "Login"}</a>
 							</li>
 						</ul>
 						<Search callback={this.props.searchCallback} advancedSearchCallback={this.props.advancedSearchToggleCallback} advancedSearch="advancedOptions"/>

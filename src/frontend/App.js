@@ -1,8 +1,13 @@
 import React from "react";
 import "./bootstrap-import.js";
+import axios from "axios";
 
 import Navigation from "./navigation/navigation.js";
 import Display from "./display/display.js";
+import LoginModal from "./modals/loginModal.js";
+import "./index.css";
+
+const API = "api/v0.0.1/"
 
 class App extends React.Component {
 
@@ -16,12 +21,41 @@ class App extends React.Component {
 		this.search = this.search.bind(this);
 		this.advSearch = this.advSearch.bind(this);
 		this.advancedSearchToggle = this.advancedSearchToggle.bind(this);
+		this.getComments = this.getComments.bind(this);
+		this.userClick = this.userClick.bind(this);
+		this.getUser = this.getUser.bind(this);
 
+		this.state = {
+			comments: [],
+			threadTitle: undefined,
+			user: undefined
+		}
+
+		this.getComments();
 	}
+
+
 
 	componentDidMount(){
 		//Trigger margin-top autoadjustment
 		this.advancedSearchToggle();
+	}
+
+
+	getComments(query = ""){
+		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
+			this.setState({
+				comments: res.data.comments
+			});
+		}).catch(error => {});
+	}
+
+	getUser(user = ""){
+		axios.get(`${window.location.href}${API}users?name=${user}`).then(res => {
+			this.setState({
+				user: res.data.users[0]
+			});
+		}).catch(error => {});
 	}
 
 	/**
@@ -29,7 +63,20 @@ class App extends React.Component {
 		@param {string} name Name of drink to search for
 	*/
 	search(query){
+		this.getComments(`search=${query}`);
+		this.setState({
+			threadTitle: undefined
+		});
+	}
 
+
+	userClick(){
+		if(this.state.user){
+			this.getComments(`user=${encodeURIComponent(this.state.user._id)}`);
+		}
+		else{
+			$('#LoginModal').modal();
+		}
 	}
 
 	/**
@@ -43,7 +90,6 @@ class App extends React.Component {
 				marginTop: `${$("#nav-wrapper").height() + 50}px`
 			},200);
 		},250);
-
 	}
 
 	/**
@@ -51,7 +97,17 @@ class App extends React.Component {
 		@param {object} query Contains all the data from AdvancedSearch to send to the database
 	*/
 	advSearch(query){
-		console.log(query)
+
+		const trans = {
+			querySearch: "search",
+			countrySearch: "country",
+			subforumSearch: "subforum"
+		}
+
+		this.getComments(Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1));
+		this.setState({
+			threadTitle: undefined
+		});
 	}
 
 	render() {
@@ -59,9 +115,12 @@ class App extends React.Component {
 			<Navigation
 				searchCallback={this.search}
 				advSearchCallback={this.advSearch}
-				advancedSearchToggleCallback={this.advancedSearchToggle} />
+				advancedSearchToggleCallback={this.advancedSearchToggle}
+				userCallback={this.userClick}
+				user={this.state.user} />
 
-			<Display />
+			<Display comments={this.state.comments} />
+			<LoginModal loginCallback={name => this.getUser(name)} />
 		</>;
 	}
 }

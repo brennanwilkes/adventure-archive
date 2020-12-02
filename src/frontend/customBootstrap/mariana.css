@@ -1,0 +1,143 @@
+
+/*------------------------------------
+- COLOR mariana
+------------------------------------*/
+.alert-mariana {
+	color: #1b2a35;
+	background-color: #bbcedb;
+	border-color: #adc4d5;
+}
+
+.alert-mariana hr {
+	border-top-color: #9cb8cc;
+}
+
+.alert-mariana .alert-link {
+	color: #0a0f13;
+}
+
+.badge-mariana {
+	color: #fff;
+	background-color: #456b86;
+}
+
+.badge-mariana[href]:hover, .badge-mariana[href]:focus {
+	color: #fff;
+	background-color: #335064;
+}
+
+.bg-mariana {
+	background-color: #456b86 !important;
+}
+
+a.bg-mariana:hover, a.bg-mariana:focus,
+button.bg-mariana:hover,
+button.bg-mariana:focus {
+	background-color: #335064 !important;
+}
+
+.border-mariana {
+	border-color: #456b86 !important;
+}
+
+.btn-mariana {
+	color: #fff;
+	background-color: #456b86;
+	border-color: #456b86;
+}
+
+.btn-mariana:hover {
+	color: #fff;
+	background-color: #38586e;
+	border-color: #335064;
+}
+
+.btn-mariana:focus, .btn-mariana.focus {
+	box-shadow: 0 0 0 0.2rem rgba(69, 107, 134, 0.5);
+}
+
+.btn-mariana.disabled, .btn-mariana:disabled {
+	color: #fff;
+	background-color: #456b86;
+	border-color: #456b86;
+}
+
+.btn-mariana:not(:disabled):not(.disabled):active, .btn-mariana:not(:disabled):not(.disabled).active, .show > .btn-mariana.dropdown-toggle {
+	color: #fff;
+	background-color: #335064;
+	border-color: #2e485a;
+}
+
+.btn-mariana:not(:disabled):not(.disabled):active:focus, .btn-mariana:not(:disabled):not(.disabled).active:focus, .show > .btn-mariana.dropdown-toggle:focus {
+	box-shadow: 0 0 0 0.2rem rgba(69, 107, 134, 0.5);
+}
+
+.btn-outline-mariana {
+	color: #456b86;
+	background-color: transparent;
+	border-color: #456b86;
+}
+
+.btn-outline-mariana:hover {
+	color: #fff;
+	background-color: #456b86;
+	border-color: #456b86;
+}
+
+.btn-outline-mariana:focus, .btn-outline-mariana.focus {
+	box-shadow: 0 0 0 0.2rem rgba(69, 107, 134, 0.5);
+}
+
+.btn-outline-mariana.disabled, .btn-outline-mariana:disabled {
+	color: #456b86;
+	background-color: transparent;
+}
+
+.btn-outline-mariana:not(:disabled):not(.disabled):active, .btn-outline-mariana:not(:disabled):not(.disabled).active, .show > .btn-outline-mariana.dropdown-toggle {
+	color: #fff;
+	background-color: #456b86;
+	border-color: #456b86;
+}
+
+.btn-outline-mariana:not(:disabled):not(.disabled):active:focus, .btn-outline-mariana:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-mariana.dropdown-toggle:focus {
+	box-shadow: 0 0 0 0.2rem rgba(69, 107, 134, 0.5);
+}
+
+.list-group-item-mariana {
+	color: #1b2a35;
+	background-color: #adc4d5;
+}
+
+.list-group-item-mariana.list-group-item-action:hover, .list-group-item-mariana.list-group-item-action:focus {
+	color: #1b2a35;
+	background-color: #9cb8cc;
+}
+
+.list-group-item-mariana.list-group-item-action.active {
+	color: #fff;
+	background-color: #1b2a35;
+	border-color: #1b2a35;
+}
+
+.table-mariana,
+.table-mariana > th,
+.table-mariana > td {
+	background-color: #adc4d5;
+}
+
+.table-hover .table-mariana:hover {
+	background-color: #9cb8cc;
+}
+
+.table-hover .table-mariana:hover > td,
+.table-hover .table-mariana:hover > th {
+	background-color: #9cb8cc;
+}
+
+.text-mariana {
+	color: #456b86 !important;
+}
+
+a.text-mariana:hover, a.text-mariana:focus {
+	color: #335064 !important;
+}

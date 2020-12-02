@@ -41,15 +41,15 @@ class AdvancedSearchPannel extends React.Component{
 		@param {object} event Sneakilly can be a index to pop from the search array
 	*/
 	updateSubmit(event){
-
 		const query = {};
-		["querySearch","countrySearch","userSearch","subforumSearch"].forEach((search, i) => {
+		["querySearch","countrySearch","subforumSearch"].forEach((search, i) => {
 
-			query[search] = $(`.${search}`).toArray().map(elem => elem.value);
+			query[search] = $(`.${search}`).toArray().map(elem => encodeURIComponent(elem.value));
 
 			if(event && event.dropId === search){
 				query[search] = query[search].splice(event,1);
 			}
+
 		});
 
 		this.props.callback(query);
@@ -62,7 +62,7 @@ class AdvancedSearchPannel extends React.Component{
 	*/
 	render(){
 		return <>
-			<form className="collapse bg-dark form-group py-3" id={this.props.id} onSubmit={event=>{
+			<form className="collapse bg-mariana form-group py-3" id={this.props.id} onSubmit={event=>{
 				event.preventDefault();
 				setTimeout(()=>{
 					$("#menu").animate({
@@ -72,22 +72,29 @@ class AdvancedSearchPannel extends React.Component{
 			}}>
 				<div className="row py-2 justify-content-md-center">
 					<div className="col-md-9">
-						<MultiInput identifier="querySearch" callback={this.updateSubmit} label="Search for" />
+						<MultiInput
+							identifier="querySearch"
+							callback={this.updateSubmit}
+							label="Search for"
+							key="querySearchKey" />
 					</div>
 				</div>
 				<div className="row py-2 justify-content-md-center">
 					<div className="col-md-9">
-						<MultiInput identifier="countrySearch" callback={this.updateSubmit} label="Country" />
+						<MultiInput
+							identifier="countrySearch"
+							callback={this.updateSubmit}
+							label="Country"
+							key="countrySearch" />
 					</div>
 				</div>
 				<div className="row py-2 justify-content-md-center">
 					<div className="col-md-9">
-						<MultiInput identifier="userSearch" callback={this.updateSubmit} label="User" />
-					</div>
-				</div>
-				<div className="row py-2 justify-content-md-center">
-					<div className="col-md-9">
-						<MultiInput identifier="subforumSearch" callback={this.updateSubmit} label="Sub-Forum" />
+						<MultiInput
+							identifier="subforumSearch"
+							callback={this.updateSubmit}
+							label="Sub-Forum"
+							key="subforumSearch" />
 					</div>
 				</div>
 			</form>

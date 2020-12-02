@@ -32,7 +32,7 @@ class Search extends React.Component{
 					label="Search"
 					className="form-control"
 					onChange={event => {
-						this.props.callback(event.target.value);
+						this.props.callback(encodeURIComponent(event.target.value));
 					}} />
 			</form>
 		</>;

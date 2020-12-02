@@ -17,8 +17,25 @@ main{
 	}
 }
 
+@media (min-width: 768px) {
+
+	.nav-brand-item > h1::after{
+		content: " | "
+	}
+
+	.nav-brand-item:hover > h1::after{
+		cursor: default;
+		color: #d9ceb1;
+	}
+}
+
 .nav-brand-item{
 	margin-right: -0.5rem;
+}
+
+nav h1, nav a{
+	font-family: 'Muli', sans-serif;
+	text-transform: uppercase;
 }
 
 .form-inline{
@@ -35,4 +52,8 @@ main{
 .container-fluid .row{
 	margin-left: 0;
 	margin-right: 0;
+}
+
+a:hover{
+	cursor: pointer;
 }

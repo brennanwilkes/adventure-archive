@@ -12,10 +12,6 @@ class Display extends React.Component{
 	*/
 	constructor(props){
 		super(props);
-
-		this.state = {
-			comments: []
-		}
 	}
 
 	componentDidMount(){
@@ -24,9 +20,11 @@ class Display extends React.Component{
 
 	render(){
 		return <>
-			<div id="display">
-
-			</div>
+			<div id="display">{
+				this.props.comments.map(comment => (
+					<p key={comment._id} >{comment.content}</p>
+				))
+			}</div>
 		</>
 	}
 }

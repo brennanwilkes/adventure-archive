@@ -34,26 +34,33 @@ class MultiInput extends React.Component{
 	*/
 	render(){
 		return <>
-			<div className="multiInput">
-				<div>
+			<div className="multiInput" key={`multiInput-${this.props.identifier}`}>
+				<div key={`multiInput-${this.props.identifier}-hd`}>
 					<FloatingLabel
+						key={`multiInput-${this.props.identifier}-hf`}
 						type="text"
 						label={this.props.label}
 						className={`form-control ${this.props.identifier}`}
 						onChange={this.props.callback} />
 
-					<button className="btn btn-success" onClick={event => {
+					<button
+						key={`multiInput-${this.props.identifier}-hb`}
+						className="btn btn-success"
+						onClick={event => {
 						if(this.state.copies.length < 7){
 							this.setState({copies:[...this.state.copies,""]});
 						}
-					}}><FaPlusSquare size={28} /></button>
+					}}>
+						<FaPlusSquare size={28} key={`multiInput-${this.props.identifier}-hs`} />
+					</button>
 				</div>
 				{
-					this.state.copies.map((copy,i) => <>
-						<div>
+					this.state.copies.map((copy,i) => (
+						<div key={`multiInput-${this.props.identifier}-${i}d`}>
 							<input
 								className={`form-control ${this.props.identifier} ${this.props.identifier}-c${i}`}
 								value={this.state.copies[i]}
+								key={`multiInput-${this.props.identifier}-${i}i`}
 								onChange={event=>{
 									let copies = this.state.copies;
 									copies[i] = event.target.value;
@@ -62,15 +69,20 @@ class MultiInput extends React.Component{
 									this.props.callback();
 							}} />
 
-							<button className="btn btn-danger" onClick={event=>{
+							<button
+								key={`multiInput-${this.props.identifier}-${i}b`}
+								className="btn btn-danger"
+								onClick={event=>{
 								let copies = this.state.copies.slice(0);
 								copies.splice(i,1);
 								this.props.callback({dropIndex:i,dropId:this.props.identifier});
 								this.setState({copies:copies});
 
-							}}><FaMinusSquare size={28} /></button>
+							}}>
+								<FaMinusSquare size={28} key={`multiInput-${this.props.identifier}-${i}s`} />
+							</button>
 						</div>
-					</>)
+					))
 				}
 			</div>
 		</>;
