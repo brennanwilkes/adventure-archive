@@ -7,7 +7,7 @@ import "../bootstrap-import.js";
 import "./navigation.css";
 import AdvancedSearchPannel from "../searchPanel/advancedSearchPanel.js";
 import Search from "../searchPanel/search/search.js";
-
+import LoadingIcon from "./loadingIcon/loadingIcon.js";
 
 /**
 	Main navigation component for the menu
@@ -41,6 +41,7 @@ class Navigation extends React.Component{
 									onClick={this.props.userCallback}>{this.props.user ? this.props.user.name : "Login"}</a>
 							</li>
 						</ul>
+						<LoadingIcon size={28} />
 						<Search callback={this.props.searchCallback} advancedSearchCallback={this.props.advancedSearchToggleCallback} advancedSearch="advancedOptions"/>
 					</div>
 				</nav>

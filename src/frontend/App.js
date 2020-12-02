@@ -10,6 +10,8 @@ import "./index.css";
 const API = "api/v0.0.1/";
 const DEFAULT_LIMIT = 25;
 
+var intervalID;
+
 class App extends React.Component {
 
 	/**
@@ -29,25 +31,49 @@ class App extends React.Component {
 		this.state = {
 			comments: [],
 			threadTitle: undefined,
-			user: undefined
+			user: undefined,
+			nextQuery: undefined,
+			queryLock: false
 		}
 
-		this.getComments(`limit=${DEFAULT_LIMIT}`);
 	}
 
 
 
 	componentDidMount(){
 		//Trigger margin-top autoadjustment
+		this.getComments(`limit=${DEFAULT_LIMIT}`);
 		this.advancedSearchToggle();
 	}
 
 
 	getComments(query = ""){
+		this.setState({queryLock: true});
+
+		let rot = 0;
+		if(intervalID){
+			clearInterval(intervalID);
+		}
+		intervalID = setInterval((event)=>{
+			$(".loadingIcon").css({transform : `rotate(${rot}deg)`});
+			rot += 1;
+		},10);
+
 		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
 			this.setState({
 				comments: res.data.comments
 			});
+
+			if(this.state.nextQuery){
+				this.getComments(this.state.nextQuery);
+				this.setState({nextQuery: undefined});
+			}
+			else{
+				this.setState({queryLock: false});
+				clearInterval(intervalID);
+				$(".loadingIcon").css({transform : 'rotate(0deg)'});
+			}
+
 		}).catch(error => {});
 	}
 
@@ -106,10 +132,15 @@ class App extends React.Component {
 			limit: "limit"
 		}
 
-		this.getComments(Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1));
-		this.setState({
-			threadTitle: undefined
-		});
+		const searchQuery = Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1);
+
+		if(this.state.queryLock){
+			this.setState({nextQuery:searchQuery});
+		}
+		else{
+			this.getComments(searchQuery);
+		}
+
 	}
 
 	render() {

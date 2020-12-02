@@ -59,8 +59,8 @@ class RangeSlider extends React.Component{
 				<output
 					className="output-val"
 					id={`${this.props.id}-output`}
-					value={this.state.val * (this.props.outputMultipler?this.props.outputMultipler: 1)} >{
-						this.state.val * (this.props.outputMultipler?this.props.outputMultipler: 1)
+					value={Math.max(1,this.state.val * (this.props.outputMultipler ? this.props.outputMultipler: 1))} >{
+						Math.max(1,this.state.val * (this.props.outputMultipler ? this.props.outputMultipler: 1))
 				}</output>
 			</div>
 		</>
