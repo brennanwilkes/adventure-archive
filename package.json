@@ -8,9 +8,10 @@
 		"scrapeData": "./src/dev/scrapeData.sh",
 		"rootIndex": "./src/dev/rootIndexer.sh > data/forums.csv",
 		"speedTest": "./src/dev/speedTest.sh https://www.lonelyplanet.com/thorntree/forums/asia-north-east-asia/japan/coronavirus-and-travel-in-japan 120",
-		"dev": "run-p watch dev:server",
-		"dev:server": "nodemon .",
+		"dev:full": "run-p watch dev",
+		"dev": "nodemon .",
 		"watch": "webpack --config src/webpack.config.js --watch",
+		"build:production": "sed -i 's\/^mode:\"development\",\/mode:\"production\",\/' src\/webpack.config.js ; npm run build:frontend ; sed -i 's\/^mode:\"production\",\/mode:\"development\",\/' src\/webpack.config.js ;",
 		"build:frontend": "webpack --config src/webpack.config.js",
 		"test": "jest --colors --verbose"
 	},
