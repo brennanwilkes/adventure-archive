@@ -27,3 +27,16 @@
 	max-width: 15vw;
 	width: 15vw;
 }
+
+
+@media (max-width: 768px) {
+	#threadModal .modal-dialog{
+		width: 95%;
+		min-width: 95%;
+		margin: auto !important;
+		margin-top: 5vh !important;
+	}
+	.threadDetailComment > div{
+		overflow: hidden;
+	}
+}

@@ -2,7 +2,9 @@
 
 .comment > div{
 	position: relative;
-	max-height: 25vh;
+	max-height: 35vh;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 .comment p{
@@ -11,6 +13,7 @@
 	max-height: 100%;
 	margin: 0;
 	padding: 0;
+	text-align: justify;
 }
 
 .comment p::-webkit-scrollbar {
@@ -22,54 +25,56 @@
 	scrollbar-width: none;
 }
 
+.floatingHeaderWrapper{
+	z-index: 2;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 
-.highlight{
-	color: red;
+.floatingHeader, .floatingFooter{
+	min-width: 50vw;
+	width: 50vw;
+	max-width: 50vw;
 }
 
 .floatingHeader{
 	display: inline-flex;
 	flex-direction: row;
 	align-items: center;
-	left: -4vw;
-	top: -4vh;
-	transition: transform 0.5s;
-	-webkit-transition: transform 0.5s;
-	position: absolute;
-	z-index: 2;
+	justify-content: center;
+}
 
+.floatingHeader, .floatingFooter > div{
 	border-radius: 10px;
 	border: 2px solid #456b86;
+	transition: transform 0.5s;
+	-webkit-transition: transform 0.5s;
+	z-index: 2;
+
 }
 
 .floatingFooter{
-	position: absolute;
-	display: inline-flex;
-	flex-direction: column;
-	text-align: right;
-	right: -4vw;
-	bottom: -4vh;
+	text-align: center;
+	width: 70%;
+	align-items: center;
+	justify-content: space-between;
 }
 
-.floatingFooter > div{
-	transition: transform 0.5s;
-	-webkit-transition: transform 0.5s;
-	z-index: 2;
-
-	border-radius: 10px;
-	border: 2px solid #456b86;
+.floatingHeader .spacer:hover{
+	cursor: default;
+}
+.floatingHeader .spacer{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .country, .title, .user, .subforum{
 	cursor: pointer;
-}
-
-.country::after{
-	content: " | ";
-	margin-left: 0.5vw;
-	margin-right: 0.5vw;
-	margin-top: 0;
-	margin-bottom: 0;
 }
 
 .country:hover, .subforum:hover{
@@ -78,12 +83,6 @@
 .country:active, .subforum:active{
 	color: #947f48 !important;
 }
-
-.country::after:hover, .country:hover::after{
-	cursor: default;
-	color: #d9ceb1 !important;
-}
-
 
 .title:hover, .user:hover{
 	color: #4eabca !important;
@@ -96,4 +95,26 @@
 .floatingHeader:hover, .floatingFooter > div:not(.date):hover{
 	transform: scale(1.1);
 	z-index: 3;
+}
+
+
+@media (max-width: 768px) {
+
+	.comment > div{
+		max-height: 80vh;
+	}
+
+	.floatingFooter > div:nth-child(2){
+		margin-top: 0.5rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.floatingHeader .spacer{
+		display: none;
+	}
+
+	.floatingHeader{
+		text-align: center;
+	}
+
 }
