@@ -1,0 +1,4 @@
+public-frontend/*
+coverage/*
+**/*.spec.js
+**/bootstrap-import.js

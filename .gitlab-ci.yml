@@ -22,6 +22,7 @@ jest:
     - npm --version
     - node --version
     - npm install
+    - npm run lint
     - npm run test --silent
   coverage: '/All files[^|]*\|[^|]*\s([\d.]+)/'
   artifacts:
@@ -47,7 +48,6 @@ pages:
     expire_in: 1 hour
   only:
     - main
-
 
 docker:
   stage: package

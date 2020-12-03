@@ -1,10 +1,10 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../bootstrap-import.js";
 
-import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 import MultiInput from "./multiInput/multiInput.js";
 import RangeSlider from "./rangeSlider/rangeSlider.js";
 
@@ -14,13 +14,12 @@ import RangeSlider from "./rangeSlider/rangeSlider.js";
 	@memberof frontend
 	@extends React.Component
 */
-class AdvancedSearchPannel extends React.Component{
-
+class AdvancedSearchPannel extends React.Component {
 	/**
 		Binds methods
 		@param {any[]} props
 	*/
-	constructor(props){
+	constructor (props) {
 		super(props);
 		this.updateSubmit = this.updateSubmit.bind(this);
 	}
@@ -29,9 +28,9 @@ class AdvancedSearchPannel extends React.Component{
 		Sets up event listener for hitting enter while in an input.
 		On enter, will unfocus the target input.
 	*/
-	componentDidMount(){
-		$("input").keypress(function(e) {
-			if(e.which == 10 || e.which == 13) {
+	componentDidMount () {
+		$("input").keypress(function (e) {
+			if (e.which === 10 || e.which === 13) {
 				$(e.target).blur();
 			}
 		});
@@ -41,13 +40,12 @@ class AdvancedSearchPannel extends React.Component{
 		Parses and manipulates input values before providing them to the given onchange callback
 		@param {object} event Sneakilly can be a index to pop from the search array
 	*/
-	updateSubmit(event){
+	updateSubmit (event) {
 		const query = {};
-		["querySearch","countrySearch","subforumSearch"].forEach((search, i) => {
-
+		["querySearch", "countrySearch", "subforumSearch"].forEach((search, i) => {
 			query[search] = $(`.${search}`).toArray().map(elem => encodeURIComponent(elem.value));
-			if(event && event.dropId === search){
-				query[search] = query[search].splice(event,1);
+			if (event && event.dropId === search) {
+				query[search] = query[search].splice(event, 1);
 			}
 		});
 
@@ -55,22 +53,21 @@ class AdvancedSearchPannel extends React.Component{
 		query.groupByThread = [true];
 
 		this.props.callback(query);
-
 	}
 
 	/**
 		Renders out the full panel. Contains all inputs and connecting callback methods.
 		Is fully collapsable and mobile friendly
 	*/
-	render(){
+	render () {
 		return <>
-			<form className="collapse bg-mariana form-group py-3" id={this.props.id} onSubmit={event=>{
+			<form className="collapse bg-mariana form-group py-3" id={this.props.id} onSubmit={event => {
 				event.preventDefault();
-				setTimeout(()=>{
+				setTimeout(() => {
 					$("#menu").animate({
 						marginTop: `${$("#nav-wrapper").height() + 50}px`
-					},200);
-				},250);
+					}, 200);
+				}, 250);
 			}}>
 				<div className="row py-2 justify-content-md-center">
 					<div className="col-md-9">
@@ -111,8 +108,13 @@ class AdvancedSearchPannel extends React.Component{
 					</div>
 				</div>
 			</form>
-		</>
+		</>;
 	}
 }
+
+AdvancedSearchPannel.propTypes = {
+	callback: PropTypes.func,
+	id: PropTypes.string
+};
 
 export default AdvancedSearchPannel;

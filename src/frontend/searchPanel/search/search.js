@@ -1,7 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../../bootstrap-import.js";
 
 import "./search.css";
@@ -14,13 +15,12 @@ import AdvancedSearchButton from "../advancedSearchButton/advancedSearchButton.j
 	@memberof frontend
 	@extends React.Component
 */
-class Search extends React.Component{
-
+class Search extends React.Component {
 	/**
 		Renders out a search bar input siblinged to an advanced search toggler.
 		Connects them with callback methods.
 	*/
-	render(){
+	render () {
 		return <>
 			<form className="form-inline p-0 mx-3 search" onSubmit={event => {
 				event.preventDefault();
@@ -39,5 +39,10 @@ class Search extends React.Component{
 	}
 }
 
+Search.propTypes = {
+	advancedSearch: PropTypes.string,
+	advancedSearchCallback: PropTypes.func,
+	callback: PropTypes.func
+};
 
 export default Search;

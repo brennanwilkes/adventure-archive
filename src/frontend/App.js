@@ -11,15 +11,14 @@ import "./index.css";
 const API = "api/v0.0.1/";
 const DEFAULT_LIMIT = 25;
 
-var intervalID;
+let intervalID;
 
 class App extends React.Component {
-
 	/**
 		Initializes state, binds methods, and queries database for initial data.
 		@param {any[]} props Should contain a username
 	*/
-	constructor(props){
+	constructor (props) {
 		super(props);
 
 		this.search = this.search.bind(this);
@@ -41,93 +40,82 @@ class App extends React.Component {
 			nextQueryIsThread: undefined,
 			queryLock: false,
 			lastQuery: undefined
-		}
-
+		};
 	}
 
-
-
-	componentDidMount(){
-		//Trigger margin-top autoadjustment
+	componentDidMount () {
+		// Trigger margin-top autoadjustment
 		this.getComments(`random=${DEFAULT_LIMIT}`);
 		this.advancedSearchToggle();
 	}
 
-
-	getComments(query = "", threadCommentMode = false){
-		this.setState({queryLock: true});
+	getComments (query = "", threadCommentMode = false) {
+		this.setState({ queryLock: true });
 
 		let rot = 0;
-		if(intervalID){
+		if (intervalID) {
 			clearInterval(intervalID);
 		}
-		intervalID = setInterval((event)=>{
-			$(".loadingIcon").css({transform : `rotate(${rot}deg)`});
+		intervalID = setInterval((event) => {
+			$(".loadingIcon").css({ transform: `rotate(${rot}deg)` });
 			rot += 1;
-		},10);
+		}, 10);
 
 		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
-			this.setState({lastQuery: query});
+			this.setState({ lastQuery: query });
 
-			if(threadCommentMode){
-				this.setState({threadComments: res.data.comments});
-			}
-			else{
-				this.setState({comments: res.data.comments});
+			if (threadCommentMode) {
+				this.setState({ threadComments: res.data.comments });
+			} else {
+				this.setState({ comments: res.data.comments });
 			}
 
-
-			if(this.state.nextQuery){
-				this.getComments(this.state.nextQuery,this.state.nextQueryIsThread);
-				this.setState({nextQuery: undefined});
-			}
-			else{
-				this.setState({queryLock: false});
+			if (this.state.nextQuery) {
+				this.getComments(this.state.nextQuery, this.state.nextQueryIsThread);
+				this.setState({ nextQuery: undefined });
+			} else {
+				this.setState({ queryLock: false });
 				clearInterval(intervalID);
-				$(".loadingIcon").css({transform : 'rotate(0deg)'});
+				$(".loadingIcon").css({ transform: "rotate(0deg)" });
 			}
-
-		}).catch(error => {});
+		}).catch(() => {});
 	}
 
-	queueGetComments(query,threadComments = false){
-		if(this.state.queryLock){
+	queueGetComments (query, threadComments = false) {
+		if (this.state.queryLock) {
 			this.setState({
 				nextQuery: query,
 				nextQueryIsThread: threadComments
 			});
-		}
-		else{
+		} else {
 			this.getComments(query, threadComments);
 		}
 	}
 
-	getUser(user = ""){
-		if(user.length < 1){
+	getUser (user = "") {
+		if (user.length < 1) {
 			return;
 		}
-		axios.post(`${window.location.href}${API}users`,{name:user}).then(res => {
+		axios.post(`${window.location.href}${API}users`, { name: user }).then(res => {
 			this.setState({
 				user: res.data.users[0]
 			});
-		}).catch(error => {});
+		}).catch(() => {});
 	}
 
 	/**
 		Basic search callback
 		@param {string} name Name of drink to search for
 	*/
-	search(query){
+	search (query) {
 		this.queueGetComments(`search=${query}&limit=${DEFAULT_LIMIT}`);
 	}
 
-
-	userClick(){
-		if(this.state.user){
+	userClick () {
+		if (this.state.user) {
 			this.queueGetComments(`user=${encodeURIComponent(this.state.user._id)}`);
-		}
-		else{
-			$('#LoginModal').modal();
+		} else {
+			$("#LoginModal").modal();
 		}
 	}
 
@@ -136,45 +124,44 @@ class App extends React.Component {
 		Updates the page's top margin to accurately reflect the change in
 		fixed navigation size
 	*/
-	advancedSearchToggle(){
-		setTimeout(()=>{
+	advancedSearchToggle () {
+		setTimeout(() => {
 			$("#display").animate({
 				marginTop: `${$("#nav-wrapper").height() + 50}px`
-			},200);
-		},250);
+			}, 200);
+		}, 250);
 	}
 
 	/**
 		Advanced search callback
 		@param {object} query Contains all the data from AdvancedSearch to send to the database
 	*/
-	advSearch(query){
-
+	advSearch (query) {
 		const trans = {
 			querySearch: "search",
 			countrySearch: "country",
 			subforumSearch: "subforum",
 			limit: "limit",
 			groupByThread: "groupByThread"
-		}
+		};
 
-		const searchQuery = Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1);
+		const searchQuery = Object.keys(query).reduce((search, key) => query[key].reduce((built, param) => `${built}&${trans[key]}=${param}`, search), "").slice(1);
 		this.queueGetComments(searchQuery);
 	}
 
-	viewThread(thread){
-		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`,true);
-		this.setState({threadTitle:thread.title});
-		$('#threadModal').modal();
+	viewThread (thread) {
+		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`, true);
+		this.setState({ threadTitle: thread.title });
+		$("#threadModal").modal();
 	}
 
-	update(event){
-		if(this.state.lastQuery){
+	update (event) {
+		if (this.state.lastQuery) {
 			this.queueGetComments(this.state.lastQuery);
 		}
 	}
 
-	render() {
+	render () {
 		return <>
 			<Navigation
 				searchCallback={this.search}
