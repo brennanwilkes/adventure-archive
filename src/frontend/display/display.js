@@ -41,7 +41,7 @@ class Display extends React.Component {
  * and view thread, advanced search toggle, and query callbacks
  */
 Display.propTypes = {
-	comments: PropTypes.arrayOf(PropTypes.Comment).isRequired,
+	comments: PropTypes.array,
 	viewThreadCallback: PropTypes.func.isRequired,
 	advancedSearchToggleCallback: PropTypes.func.isRequired,
 	queryCommentsCallback: PropTypes.func.isRequired
