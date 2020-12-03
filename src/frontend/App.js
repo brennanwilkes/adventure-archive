@@ -34,9 +34,11 @@ class App extends React.Component {
 
 		this.state = {
 			comments: [],
+			threadComments: [],
 			threadTitle: undefined,
 			user: undefined,
 			nextQuery: undefined,
+			nextQueryIsThread: undefined,
 			queryLock: false,
 			lastQuery: undefined
 		}
@@ -52,7 +54,7 @@ class App extends React.Component {
 	}
 
 
-	getComments(query = ""){
+	getComments(query = "", threadCommentMode = false){
 		this.setState({queryLock: true});
 
 		let rot = 0;
@@ -65,13 +67,18 @@ class App extends React.Component {
 		},10);
 
 		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
-			this.setState({
-				comments: res.data.comments,
-				lastQuery: query
-			});
+			this.setState({lastQuery: query});
+
+			if(threadCommentMode){
+				this.setState({threadComments: res.data.comments});
+			}
+			else{
+				this.setState({comments: res.data.comments});
+			}
+
 
 			if(this.state.nextQuery){
-				this.getComments(this.state.nextQuery);
+				this.getComments(this.state.nextQuery,this.state.nextQueryIsThread);
 				this.setState({nextQuery: undefined});
 			}
 			else{
@@ -83,12 +90,15 @@ class App extends React.Component {
 		}).catch(error => {});
 	}
 
-	queueGetComments(query){
+	queueGetComments(query,threadComments = false){
 		if(this.state.queryLock){
-			this.setState({nextQuery:query});
+			this.setState({
+				nextQuery: query,
+				nextQueryIsThread: threadComments
+			});
 		}
 		else{
-			this.getComments(query);
+			this.getComments(query, threadComments);
 		}
 	}
 
@@ -100,7 +110,7 @@ class App extends React.Component {
 			this.setState({
 				user: res.data.users[0]
 			});
-		}).catch(error => {console.error(error)});
+		}).catch(error => {});
 	}
 
 	/**
@@ -145,16 +155,15 @@ class App extends React.Component {
 			countrySearch: "country",
 			subforumSearch: "subforum",
 			limit: "limit",
-			groupByThread: true
+			groupByThread: "groupByThread"
 		}
 
 		const searchQuery = Object.keys(query).reduce((search,key) => query[key].reduce((built,param) => `${built}&${trans[key]}=${param}`,search),"").slice(1);
-
 		this.queueGetComments(searchQuery);
 	}
 
 	viewThread(thread){
-		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`);
+		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`,true);
 		this.setState({threadTitle:thread.title});
 		$('#threadModal').modal();
 	}
@@ -183,7 +192,7 @@ class App extends React.Component {
 			<ThreadModal
 				title={this.state.threadTitle}
 				user={this.state.user}
-				comments={this.state.comments}
+				comments={this.state.threadComments}
 				updateCallback={this.update} />
 		</>;
 	}

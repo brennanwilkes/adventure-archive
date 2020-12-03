@@ -52,6 +52,7 @@ class AdvancedSearchPannel extends React.Component{
 		});
 
 		query.limit = [Math.max($("#limitSlider")[0].value * 5, 1)];
+		query.groupByThread = [true];
 
 		this.props.callback(query);
 

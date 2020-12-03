@@ -19,7 +19,13 @@ exports.link = link;
 
 const getReqPath = req => {
 	const url = req.baseUrl.split("/");
-	return `${req.protocol}://${req.headers.host}${url.slice(0,url.length-1).join("/")}`;
+
+	/*
+		Use:
+			`${req.protocol}://${req.headers.host}${url.slice(0,url.length-1).join("/")}`
+		for full link URL. Has issues with http/https. Req.protocol always returns HTTP.
+	*/
+	return `${url.slice(0,url.length-1).join("/")}`;
 }
 exports.getReqPath = getReqPath;
 

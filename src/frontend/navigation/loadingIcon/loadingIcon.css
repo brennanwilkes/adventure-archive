@@ -19,3 +19,11 @@
 .loadingIcon:hover{
 	cursor: default;
 }
+
+@media (max-width: 768px) {
+	.loadingIcon{
+		margin-left: auto !important;
+		margin-right: auto !important;
+		text-align: center;
+	}
+}
