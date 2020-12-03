@@ -13,6 +13,7 @@ const buildPipeline = (req,query) => {
 
 	const queryPipe = [{$match: query}];
 
+
 	const groupPipe = [
 		{$group: {
 			_id: "$threadId",
@@ -63,6 +64,9 @@ const buildPipeline = (req,query) => {
 			];
 		}
 	}
+	if(req.query.random){
+		pipeline = [...pipeline, {$sample:{size:parseInt(req.query.random)}}];
+	}
 
 	return pipeline;
 }
@@ -86,9 +90,10 @@ const buildQuery = req => {
 
 const getComments = (req, res) => {
 	const query = buildQuery(req);
-	if(req.query.groupByThread || req.query.country || req.query.subforum){
+	if(req.query.groupByThread || req.query.country || req.query.subforum || req.query.random){
 
-		const limit = (req.query.limit ? parseInt(req.query.limit) : 250)
+		let limit = (req.query.limit ? parseInt(req.query.limit) : 250);
+		limit = (req.query.random ? parseInt(req.query.random) : limit);
 
 		Comment.aggregate(buildPipeline(req, query))
 		.limit(limit)

@@ -31,7 +31,6 @@ jest:
       junit: 'coverage/junit.xml'
     expire_in: 1 week
   only:
-    - development
     - main
 
 pages:
@@ -47,7 +46,6 @@ pages:
       - public/
     expire_in: 1 hour
   only:
-    - development
     - main
 
 

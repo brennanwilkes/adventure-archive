@@ -10,6 +10,11 @@ exports.getCommentValidator = [
 		link("self",`${getReqPath(req)}/comments?limit=30`)
 	]),
 
+	query("random").if(query("random").exists()).trim().isInt(),
+	validationErrorHandlerFactory(req => [
+		link("self",`${getReqPath(req)}/comments?random=30`)
+	]),
+
 	query("thread").if(query("thread").exists()).trim().isFloat(),
 	validationErrorHandlerFactory(req => [
 		link("self",`${getReqPath(req)}/comments?thread=1.2858713569550184e%2B48`)

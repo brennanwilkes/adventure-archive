@@ -49,7 +49,7 @@ class App extends React.Component {
 
 	componentDidMount(){
 		//Trigger margin-top autoadjustment
-		this.getComments(`limit=${DEFAULT_LIMIT}`);
+		this.getComments(`random=${DEFAULT_LIMIT}`);
 		this.advancedSearchToggle();
 	}
 
