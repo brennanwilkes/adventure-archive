@@ -1,4 +1,4 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
 const path = require("path");
 const { server } = require(path.join(__dirname, "backend", "server.js"));

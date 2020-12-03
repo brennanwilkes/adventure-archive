@@ -29,6 +29,7 @@ exports.postUserValidator = [
 		.isString()
 		.trim()
 		.isAscii()
+		.escape()
 		.isLength({ min: 1 }),
 	validationErrorHandlerFactory(req => [
 		link("self", `${getReqPath(req)}/users`, "POST")

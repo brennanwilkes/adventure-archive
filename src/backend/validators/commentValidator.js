@@ -79,13 +79,10 @@ exports.postCommentValidator = [
 		.escape(),
 
 	body("threadId")
-		.custom((threadId, { req }) => {
-			return threadId;
-		})
-
 		.isString()
 		.trim()
 		.isLength({ min: 1 })
+		.escape()
 		.custom((threadId, { req }) => Thread.findOne({ _id: threadId }).limit(1).then(result => {
 			if (!result || result.length < 1) {
 				return Promise.reject(new Error("Thread does not exist"));

@@ -1,9 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Import and setup
+// Import and setup
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 
 /**
  * Thread Schema

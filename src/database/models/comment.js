@@ -1,9 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Import and setup
+// Import and setup
 const { mongoose } = require("../connection");
 const Schema = mongoose.Schema;
-
 
 /**
  * Comment Schema. Comments have a required number _id,

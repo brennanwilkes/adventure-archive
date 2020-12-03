@@ -1,4 +1,4 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
 const readline = require("readline");
 
