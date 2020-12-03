@@ -9,7 +9,7 @@ RUN npm ci
 
 COPY ./ /usr/app/
 
-RUN npm run build:frontend
+RUN npm run build:production
 RUN npm prune --production
 
 ## ================
