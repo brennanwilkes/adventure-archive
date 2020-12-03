@@ -82,9 +82,9 @@ class RangeSlider extends React.Component {
  * output multiplier, and on change callback
  */
 RangeSlider.propTypes = {
-	default: PropTypes.string,
+	default: PropTypes.number,
 	label: PropTypes.string,
-	id: PropTypes.number,
+	id: PropTypes.string,
 	scale: PropTypes.number,
 	outputMultipler: PropTypes.number,
 	onChange: PropTypes.func

@@ -140,14 +140,13 @@ class ThreadModal extends React.Component {
 }
 
 /**
- * Props must contain user object, comments array, title, and update callback.
+ * Props may contain user object, comments array, title, and update callback.
  */
 ThreadModal.propTypes = {
-	user: PropTypes.object.isRequired,
-	comments: PropTypes.array.isRequired,
+	user: PropTypes.object,
+	comments: PropTypes.array,
 	updateCallback: PropTypes.func,
-	title: PropTypes.string.isRequired
-
+	title: PropTypes.string
 };
 
 export default ThreadModal;
