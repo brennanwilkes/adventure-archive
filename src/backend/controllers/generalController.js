@@ -1,9 +1,30 @@
+// Brennan Wilkes
+
+// Imports
 const shasum = require("shasum");
 
+/**
+ * Wraps data in an array
+ * @param {any} data
+ * @returns {array}
+ */
 const ensureArray = data => (Array.isArray(data) ? data : [data]);
+
+/**
+ * Hashes a given input using sha256
+ * @param {any} data Must be templatable
+ * @returns {number} 256bit hash
+ */
 const hash = data => parseInt(shasum(`${data}\n`), 16);
 exports.hash = hash;
 
+/**
+ * Generates a link object
+ * @param {string} rel Relation
+ * @param {string} href URL to route
+ * @param {string} action http verb. Defaults to GET
+ * @returns {object} Link object
+ */
 const link = (rel, href, action = "GET") => {
 	return {
 		rel: rel,
@@ -14,9 +35,13 @@ const link = (rel, href, action = "GET") => {
 };
 exports.link = link;
 
+/**
+ * Gets a HREF from a request
+ * @param {object} req HTTP[s] request
+ * @returns {string} HREF
+ */
 const getReqPath = req => {
 	const url = req.baseUrl.split("/");
-
 	/*
 		Use:
 			`${req.protocol}://${req.headers.host}${url.slice(0,url.length-1).join("/")}`
@@ -26,8 +51,16 @@ const getReqPath = req => {
 };
 exports.getReqPath = getReqPath;
 
+/**
+ * Adds links to a return document. Mutates @doc.
+ * @param {object} doc Document to append to
+ * @param {string} type Type of return document (Comment, User, Thread, etc)
+ * @param {string} reqPath Path HREF prefix
+ */
 const addLinks = (doc, type, reqPath) => {
+	// Self relation link
 	doc.links = [link("self", `${reqPath}/${type}s/${doc._id}`)];
+
 	if (type === "thread") {
 		doc.links.push(link("comments by thread", `${reqPath}/comments?thread=${encodeURIComponent(String(doc._id))}`));
 		doc.links.push(link("comments by country", `${reqPath}/comments?country=${encodeURIComponent(String(doc.country))}`));
@@ -52,6 +85,14 @@ const addLinks = (doc, type, reqPath) => {
 	return doc;
 };
 
+/**
+ * Formats mongoDB results as a JSON document
+ * @param {array} results mongoDB query results
+ * @param {string} type Type of expected results (Comment, User, Thread)
+ * @param {array} params Expected parameters of each document
+ * @param {string} reqPath Path prefix to endpoint
+ * @returns {object} JSON data to be sent to client
+ */
 exports.formatDoc = (results, type, params, reqPath) => {
 	results = ensureArray(results);
 
@@ -69,11 +110,22 @@ exports.formatDoc = (results, type, params, reqPath) => {
 	return json;
 };
 
+/**
+ * General GET route
+ * @param {object} req
+ * @param {object} res
+ * @param {Model} Model MongoDB Schema
+ * @param {function} formatter Custom formatter for results
+ * @param {object} searchQuery Query to filter by. Defaults to empty
+ * @param {number} limit Amount to limit requests by. Defaults to 250
+ */
 exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 250) => {
+	// Apply limit
 	if (req.query.limit) {
 		limit = parseInt(req.query.limit);
 	}
 
+	// Search database
 	Model.find(searchQuery)
 		.limit(limit)
 		.then(results => {
@@ -84,6 +136,13 @@ exports.getDocs = (req, res, Model, formatter, searchQuery = {}, limit = 250) =>
 		});
 };
 
+/**
+ * General GET route for single document
+ * @param {object} req
+ * @param {object} res
+ * @param {Model} Model MongoDB Schema
+ * @param {function} formatter Custom formatter for results
+ */
 exports.getDoc = (req, res, Model, formatter) => {
 	Model.findOne({ _id: req.params.id })
 		.then(results => {
@@ -99,6 +158,15 @@ exports.getDoc = (req, res, Model, formatter) => {
 		});
 };
 
+/**
+ * General POST route
+ * @param {object} req
+ * @param {object} res
+ * @param {Model} Model MongoDB Schema
+ * @param {object} sanitySearch Basic filter to ensure document doesn't already exist
+ * @param {object} newData Data to insert
+ * @param {function} responseCallback Callback to run to return data. Passed for better abstraction
+ */
 exports.postDoc = (req, res, Model, sanitySearch, newData, responseCallback) => {
 	Model.find(sanitySearch)
 		.limit(1)
@@ -124,6 +192,12 @@ exports.postDoc = (req, res, Model, sanitySearch, newData, responseCallback) => 
 		});
 };
 
+/**
+ * Builds a mongo $in filter list with regular expressions
+ * @param {array} params Search terms
+ * @param {string} field Field to apply search to
+ * @returns {object} $in filter pipeline
+ */
 exports.buildRegexList = (params, field) => params.map(q => new RegExp(q, "i")).map(r => {
 	const obj = {};
 	obj[field] = { $in: [r] };

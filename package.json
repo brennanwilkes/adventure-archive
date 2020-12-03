@@ -14,7 +14,8 @@
 		"build:production": "sed -i 's/^mode:\"development\",/mode:\"production\",/' src/webpack.config.js ; npm run build:frontend ; sed -i 's/^mode:\"production\",/mode:\"development\",/' src/webpack.config.js ;",
 		"build:frontend": "webpack --config src/webpack.config.js",
 		"test": "jest --colors --verbose",
-		"lint": "eslint \"src/**/*.js\" --fix"
+		"lint": "eslint \"src/**/*.js\" --fix",
+		"doc": "rm -rf documentation/ ; jsdoc -d documentation/ src/app.js src/backend/server.js src/*/*/*.js src/*/*/*/*.js src/frontend/App.js"
 	},
 	"repository": {
 		"type": "git",
@@ -60,6 +61,7 @@
 		"eslint-plugin-react": "^7.21.5",
 		"jest": "^26.6.3",
 		"jest-junit": "^12.0.0",
+		"jsdoc": "^3.6.6",
 		"nodemon": "^2.0.6",
 		"npm-run-all": "^4.1.5",
 		"supertest": "^6.0.1",

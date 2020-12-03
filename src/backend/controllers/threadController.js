@@ -1,8 +1,20 @@
+// Brennan Wilkes
+
+// Imports
 const Thread = require("../../database/models/thread.js");
-const { formatDoc, getDocs, getDoc, postDoc, buildRegexList } = require("./generalController");
+const { formatDoc, getDocs, getDoc, buildRegexList } = require("./generalController");
+
+/**
+ * Expected return params of mongo Thread
+ */
 
 const threadParams = ["_id", "title", "country", "subforum"];
 
+/**
+ * Builds a thread search query
+ * @param {object} req
+ * @returns {object} Mongo filter object
+ */
 const buildQuery = req => {
 	const query = {};
 
@@ -31,5 +43,3 @@ exports.getThreads = (req, res) => getDocs(
 );
 
 exports.getThread = (req, res) => getDoc(req, res, Thread, (results, reqPath) => formatDoc(results, "thread", threadParams, reqPath));
-
-exports.postThread = (req, res) => postDoc(req, res);
