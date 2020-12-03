@@ -43,9 +43,9 @@ class Comment extends React.Component{
 
 	render(){
 		return <>
-			<div className="comment justify-content-center row mb-5 mt-2">
+			<section className="comment justify-content-center row mb-5 mt-2">
 				<div className="col-10 p-3 mx-5 mb-2 row">
-					<div className="floatingHeaderWrapper mb-3 mt-0">
+					<header className="floatingHeaderWrapper mb-3 mt-0">
 						<div className="floatingHeader row px-2 py-1 bg-mariana">
 							<div
 								onClick={(event)=>{
@@ -88,14 +88,14 @@ class Comment extends React.Component{
 									(this.state.userData ? this.state.userData.name : "")
 							}</div>
 						</div>
-					</div>
+					</header>
 
 					<p>{
 						unescape(this.state.content)
 					}</p>
 
 				</div>
-			</div>
+			</section>
 			<hr />
 		</>
 	}

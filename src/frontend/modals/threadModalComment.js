@@ -34,7 +34,7 @@ class ThreadModalComment extends React.Component{
 
 	render(){
 		return (
-			<div>
+			<section>
 				<div className="threadDetailComment">
 					<div className="mr-3">
 						<div className="h5 text-jetsam">{this.state.userName}</div>
@@ -43,7 +43,7 @@ class ThreadModalComment extends React.Component{
 					<p>{unescape(this.state.content)}</p>
 				</div>
 				<hr />
-			</div>
+			</section>
 		)
 	}
 }

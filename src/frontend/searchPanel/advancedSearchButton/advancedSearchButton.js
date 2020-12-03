@@ -28,6 +28,7 @@ class AdvancedSearchButton extends React.Component{
 			<button
 				className="AdvancedSearch-btn btn btn-light py-2"
 				type="button"
+				aria-label="Toggle advanced search panel"
 				onClick={this.props.expandCallback}
 				data-toggle="collapse"
 				data-target={`#${this.props.target}`}>

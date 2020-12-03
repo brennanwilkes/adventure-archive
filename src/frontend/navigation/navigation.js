@@ -23,10 +23,10 @@ class Navigation extends React.Component{
 	*/
 	render(){
 		return <>
-			<div className="fixed-top" id="nav-wrapper">
+			<header className="fixed-top" id="nav-wrapper">
 				<nav className="navbar navbar-expand-md navbar-dark text-sandy bg-mariana py-3">
-					<a className="navbar-brand ml-3 nav-brand-item text-sandy" href="."><h1 className="mb-0">Adventure Archive</h1></a>
-					<button className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarCollapse" onClick={event => {
+					<a aria-label="Reload homepage" className="navbar-brand ml-3 nav-brand-item text-sandy" href="."><h1 className="mb-0">Adventure Archive</h1></a>
+					<button aria-label="Toggle advanced search panel" className="navbar-toggler mr-3" type="button" data-toggle="collapse" data-target="#navbarCollapse" onClick={event => {
 						$("#advancedOptions").removeClass("show");
 						this.props.advancedSearchToggleCallback();
 					}}>
@@ -38,6 +38,7 @@ class Navigation extends React.Component{
 								<a
 									id="userButton"
 									className="nav-link text-sandy mb-0"
+									aria-label={this.props.user ? `Show posts by ${this.props.user.name}` : "Login"}
 									onClick={this.props.userCallback}>{this.props.user ? this.props.user.name : "Login"}</a>
 							</li>
 						</ul>
@@ -46,7 +47,7 @@ class Navigation extends React.Component{
 					</div>
 				</nav>
 				<AdvancedSearchPannel id="advancedOptions" callback={this.props.advSearchCallback}/>
-			</div>
+			</header>
 		</>;
 	}
 }

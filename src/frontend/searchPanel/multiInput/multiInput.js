@@ -46,6 +46,7 @@ class MultiInput extends React.Component{
 					<button
 						key={`multiInput-${this.props.identifier}-hb`}
 						className="btn btn-success"
+						aria-label="Add new input field"
 						onClick={event => {
 						if(this.state.copies.length < 7){
 							this.setState({copies:[...this.state.copies,""]});
@@ -59,6 +60,7 @@ class MultiInput extends React.Component{
 						<div key={`multiInput-${this.props.identifier}-${i}d`}>
 							<input
 								className={`form-control ${this.props.identifier} ${this.props.identifier}-c${i}`}
+								aria-label={this.props.label}
 								value={this.state.copies[i]}
 								key={`multiInput-${this.props.identifier}-${i}i`}
 								onChange={event=>{
@@ -72,6 +74,7 @@ class MultiInput extends React.Component{
 							<button
 								key={`multiInput-${this.props.identifier}-${i}b`}
 								className="btn btn-danger"
+								aria-label="Removed input field"
 								onClick={event=>{
 								let copies = this.state.copies.slice(0);
 								copies.splice(i,1);

@@ -12,10 +12,6 @@
 	box-shadow: none;
 }
 
-.loadingIcon:active{
-	color: #000;
-}
-
 .loadingIcon:hover{
 	cursor: default;
 }
