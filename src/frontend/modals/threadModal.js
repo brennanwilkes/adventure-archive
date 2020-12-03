@@ -1,47 +1,41 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../bootstrap-import.js";
-import { FaWindowClose } from "react-icons/fa";
 import axios from "axios";
-import unescape from "unescape";
 
 import "./threadModal.css";
 import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 import ThreadModalComment from "./threadModalComment";
 
-class ThreadModal extends React.Component{
-
-	constructor(props){
+class ThreadModal extends React.Component {
+	constructor (props) {
 		super(props);
 		this.post = this.post.bind(this);
 		this.resetBtn = this.resetBtn.bind(this);
 
-
 		this.state = {
 			btnColour: "mariana",
 			btnText: "Post"
-		}
+		};
 	}
 
-	resetBtn(){
+	resetBtn () {
 		this.setState({
 			btnColour: "mariana",
 			btnText: "Post"
 		});
 	}
 
-	post(event){
+	post (event) {
 		event.preventDefault();
 
-		if(this.props.user!==undefined && this.props.user.name && this.props.user.name.length > 0){
-
-
+		if (this.props.user !== undefined && this.props.user.name && this.props.user.name.length > 0) {
 			this.props.comments[0].links.forEach((link, i) => {
-				if(link.rel === "Post new comment" && link.action === "POST"){
-
-					axios.post(`${link.href}`,{
+				if (link.rel === "Post new comment" && link.action === "POST") {
+					axios.post(`${link.href}`, {
 						user: this.props.user.name,
 						comment: $("#newComment").val(),
 						threadId: String(this.props.comments[0].threadId)
@@ -50,42 +44,38 @@ class ThreadModal extends React.Component{
 							btnColour: "success",
 							btnText: "Success"
 						});
-						setTimeout(this.resetBtn,2000);
+						setTimeout(this.resetBtn, 2000);
 						this.props.updateCallback();
-
-					}).catch(error => {
+					}).catch(() => {
 						this.setState({
 							btnColour: "danger",
 							btnText: "Error Posting"
 						});
-						setTimeout(this.resetBtn,2000)
-					})
+						setTimeout(this.resetBtn, 2000);
+					});
 				}
 			});
-		}
-		else{
+		} else {
 			this.setState({
 				btnColour: "danger",
 				btnText: "Invalid Username"
 			});
-			setTimeout(this.resetBtn,2000)
+			setTimeout(this.resetBtn, 2000);
 		}
 	}
 
-	render(){
-
+	render () {
 		let ordered = new Array(this.props.comments.length);
-		let unordered = [];
+		const unordered = [];
 		this.props.comments.forEach((c, i) => {
-			if(c.position){
+			if (c.position) {
 				ordered[parseInt(c.position)] = c;
-			}
-			else{
+			} else {
 				unordered.push(c);
 			}
 		});
 
-		ordered = [...ordered,...unordered].filter(e => e!==undefined);
+		ordered = [...ordered, ...unordered].filter(e => e !== undefined);
 
 		return <>
 			<article className="modal bg-dark fade" id="threadModal" tabIndex="-1" role="dialog" aria-labelledby="threadModal" aria-hidden="true">
@@ -113,14 +103,22 @@ class ThreadModal extends React.Component{
 									className={`btn btn-${this.state.btnColour} py-2`}
 									onClick={this.post}>{
 										this.state.btnText
-								}</button>
+									}</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</article>
-		</>
+		</>;
 	}
 }
+
+ThreadModal.propTypes = {
+	user: PropTypes.object.isRequired,
+	comments: PropTypes.array.isRequired,
+	updateCallback: PropTypes.func,
+	title: PropTypes.string.isRequired
+
+};
 
 export default ThreadModal;

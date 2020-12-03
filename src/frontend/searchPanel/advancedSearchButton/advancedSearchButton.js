@@ -1,7 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../../bootstrap-import.js";
 import { FaSlidersH } from "react-icons/fa";
 
@@ -13,14 +14,13 @@ import "./advancedSearchButton.css";
 	@memberof frontend
 	@extends React.Component
 */
-class AdvancedSearchButton extends React.Component{
-
+class AdvancedSearchButton extends React.Component {
 	/**
 		Renders a detailed button with a Fa Slider icon if a target is provided
 		Will call expandCallback on click
 	*/
-	render(){
-		if(!this.props.target){
+	render () {
+		if (!this.props.target) {
 			return <></>;
 		}
 
@@ -37,5 +37,10 @@ class AdvancedSearchButton extends React.Component{
 		</>;
 	}
 }
+
+AdvancedSearchButton.propTypes = {
+	expandCallback: PropTypes.func,
+	target: PropTypes.string
+};
 
 export default AdvancedSearchButton;

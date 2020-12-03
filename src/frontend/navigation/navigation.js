@@ -1,7 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../bootstrap-import.js";
 
 import "./navigation.css";
@@ -15,13 +16,12 @@ import LoadingIcon from "./loadingIcon/loadingIcon.js";
 	@memberof frontend
 	@extends React.Component
 */
-class Navigation extends React.Component{
-
+class Navigation extends React.Component {
 	/**
 		Renders out a mobile friendly, collapsable nav bar with all search elements nested correctly.
 		Connects navigation elements with callback methods
 	*/
-	render(){
+	render () {
 		return <>
 			<header className="fixed-top" id="nav-wrapper">
 				<nav className="navbar navbar-expand-md navbar-dark text-sandy bg-mariana py-3">
@@ -51,5 +51,13 @@ class Navigation extends React.Component{
 		</>;
 	}
 }
+
+Navigation.propTypes = {
+	advancedSearchToggleCallback: PropTypes.func,
+	searchCallback: PropTypes.func,
+	advSearchCallback: PropTypes.func,
+	userCallback: PropTypes.func,
+	user: PropTypes.object
+};
 
 export default Navigation;

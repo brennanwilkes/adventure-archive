@@ -1,38 +1,38 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../bootstrap-import.js";
 import axios from "axios";
 import unescape from "unescape";
 
-class ThreadModalComment extends React.Component{
-
-	constructor(props){
+class ThreadModalComment extends React.Component {
+	constructor (props) {
 		super(props);
 
 		this.state = this.props.data;
 		this.state.userName = "";
 	}
 
-	componentDidMount(){
+	componentDidMount () {
 		this._ismounted = true;
 
 		this.state.links.forEach((link, i) => {
-			if(link.rel === "user" && link.action === "GET"){
+			if (link.rel === "user" && link.action === "GET") {
 				axios.get(link.href)
 					.then(userRes => {
-						if(this._ismounted) this.setState({userName:userRes.data.users[0].name})
-					}).catch(error=>{});
+						if (this._ismounted) this.setState({ userName: userRes.data.users[0].name });
+					}).catch(() => {});
 			}
 		});
 	}
 
-	componentWillUnmount() {
+	componentWillUnmount () {
 		this._ismounted = false;
 	}
 
-	render(){
+	render () {
 		return (
 			<section>
 				<div className="threadDetailComment">
@@ -44,8 +44,12 @@ class ThreadModalComment extends React.Component{
 				</div>
 				<hr />
 			</section>
-		)
+		);
 	}
 }
+
+ThreadModalComment.propTypes = {
+	data: PropTypes.object.isRequired
+};
 
 export default ThreadModalComment;

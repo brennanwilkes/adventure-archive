@@ -1,7 +1,8 @@
-//Brennan Wilkes
+// Brennan Wilkes
 
-//Imports
+// Imports
 import React from "react";
+import PropTypes from "prop-types";
 import "../bootstrap-import.js";
 
 import "./FloatingLabel.css";
@@ -13,21 +14,20 @@ import "./FloatingLabel.css";
 	@memberof frontend
 	@extends React.Component
 */
-class FloatingLabel extends React.Component{
-
+class FloatingLabel extends React.Component {
 	/**
 		Initializes state and binds methods
 		@param {any[]} props Should contain any input classes, the input id, the label text, and optionally an onChange callback
 		@constructor
 	*/
-	constructor(props){
+	constructor (props) {
 		super(props);
 		this.handleTextChange = this.handleTextChange.bind(this);
 
 		this.state = {
 			isActive: false,
 			text: ""
-		}
+		};
 	}
 
 	/**
@@ -36,10 +36,10 @@ class FloatingLabel extends React.Component{
 		controlled input elements
 		@param {object} event
 	*/
-	handleTextChange(event) {
+	handleTextChange (event) {
 		this.setState({
-			isActive:event.target.value!=="",
-			text:event.target.value
+			isActive: event.target.value !== "",
+			text: event.target.value
 		});
 	}
 
@@ -47,17 +47,17 @@ class FloatingLabel extends React.Component{
 		Renders a form input with all the required callback and id information
 		nested within a div, and sibling to a label
 	*/
-	render(){
+	render () {
 		return <>
 			<div className="floating-label">
 				<input
 					className={`pb-1 pt-3 ${this.props.className}`}
 					type={this.props.type}
-					id={this.props.id ? this.props.id : `floating-label${parseInt(Math.random()*1000)}`}
+					id={this.props.id ? this.props.id : `floating-label${parseInt(Math.random() * 1000)}`}
 					value={this.state.text}
 					onChange={event => {
 						this.handleTextChange(event);
-						if(this.props.onChange){
+						if (this.props.onChange) {
 							this.props.onChange(event);
 						}
 					}} />
@@ -69,5 +69,13 @@ class FloatingLabel extends React.Component{
 		</>;
 	}
 }
+
+FloatingLabel.propTypes = {
+	className: PropTypes.string,
+	type: PropTypes.string,
+	id: PropTypes.string,
+	onChange: PropTypes.func,
+	label: PropTypes.string
+};
 
 export default FloatingLabel;

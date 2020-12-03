@@ -1,11 +1,11 @@
-const { check, query, body, validationResult } = require('express-validator');
+const { query, body } = require("express-validator");
 const { link, getReqPath } = require("../controllers/generalController");
 const { validationErrorHandlerFactory, forceArraySanitizer } = require("./generalValidator");
 
 exports.getUserValidator = [
 	query("limit").if(query("limit").exists()).trim().isInt(),
 	validationErrorHandlerFactory(req => [
-		link("self",`${getReqPath(req)}/users?limit=30`)
+		link("self", `${getReqPath(req)}/users?limit=30`)
 	]),
 
 	query("name").if(query("name").exists())
@@ -14,12 +14,12 @@ exports.getUserValidator = [
 
 exports.postUserValidator = [
 	body("name")
-	.isString()
-	.trim()
-	.isAscii()
-	.isLength({min:1}),
+		.isString()
+		.trim()
+		.isAscii()
+		.isLength({ min: 1 }),
 	validationErrorHandlerFactory(req => [
-		link("self",`${getReqPath(req)}/users`,"POST")
+		link("self", `${getReqPath(req)}/users`, "POST")
 	])
 
-]
+];

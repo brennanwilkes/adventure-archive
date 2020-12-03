@@ -1,14 +1,14 @@
-const {connection, mongoose} = require("./connection");
+const { connection, mongoose } = require('./connection')
 
-test("Verifies mongo connection", () => {
+test('Verifies mongo connection', () => {
 	return connection.then(data => {
-		expect(data.connections[0].name).toBe("adventure-archive");
-	},err => {
-		throw new Error(`Failed to connect to mongoDB: ${err}`);
-	});
-});
+		expect(data.connections[0].name).toBe('adventure-archive')
+	}, err => {
+		throw new Error(`Failed to connect to mongoDB: ${err}`)
+	})
+})
 
 afterAll(done => {
-	mongoose.connection.close();
-	done();
-});
+	mongoose.connection.close()
+	done()
+})
