@@ -30,13 +30,15 @@ class App extends React.Component {
 		this.getUser = this.getUser.bind(this);
 		this.queueGetComments = this.queueGetComments.bind(this);
 		this.viewThread = this.viewThread.bind(this);
+		this.update = this.update.bind(this);
 
 		this.state = {
 			comments: [],
 			threadTitle: undefined,
 			user: undefined,
 			nextQuery: undefined,
-			queryLock: false
+			queryLock: false,
+			lastQuery: undefined
 		}
 
 	}
@@ -64,7 +66,8 @@ class App extends React.Component {
 
 		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
 			this.setState({
-				comments: res.data.comments
+				comments: res.data.comments,
+				lastQuery: query
 			});
 
 			if(this.state.nextQuery){
@@ -90,11 +93,14 @@ class App extends React.Component {
 	}
 
 	getUser(user = ""){
-		axios.get(`${window.location.href}${API}users?name=${user}`).then(res => {
+		if(user.length < 1){
+			return;
+		}
+		axios.post(`${window.location.href}${API}users`,{name:user}).then(res => {
 			this.setState({
 				user: res.data.users[0]
 			});
-		}).catch(error => {});
+		}).catch(error => {console.error(error)});
 	}
 
 	/**
@@ -153,6 +159,12 @@ class App extends React.Component {
 		$('#threadModal').modal();
 	}
 
+	update(event){
+		if(this.state.lastQuery){
+			this.queueGetComments(this.state.lastQuery);
+		}
+	}
+
 	render() {
 		return <>
 			<Navigation
@@ -168,7 +180,11 @@ class App extends React.Component {
 				advancedSearchToggleCallback={this.advancedSearchToggle}
 				viewThreadCallback={this.viewThread} />
 			<LoginModal loginCallback={name => this.getUser(name)} />
-			<ThreadModal title={this.state.threadTitle} comments={this.state.comments} />
+			<ThreadModal
+				title={this.state.threadTitle}
+				user={this.state.user}
+				comments={this.state.comments}
+				updateCallback={this.update} />
 		</>;
 	}
 }

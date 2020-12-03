@@ -1,14 +1,3 @@
-.btn{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.modal .btn, .modal h5{
-	width: 100%;
-	text-align: center;
-}
-
 .modal h5{
 	font-family: 'Muli', sans-serif;
 	text-transform: uppercase;
@@ -18,6 +7,11 @@
 #threadModal .modal-dialog{
 	width: 90%;
 	min-width: 90%;
+}
+
+#threadModal .modal-footer{
+	justify-content: center !important;
+	border: 0;
 }
 
 .threadDetailComment{
