@@ -265,6 +265,17 @@ for(let i=-1;i<CONFIG.api.length;i++){
 		done();
 	});
 
+	test(`Get comments with random param with api ${version?version:"default"}`, async done => {
+		let res = await request.get(`/api/${version}comments?random=2`);
+		expect(res.status).toBe(200);
+		expect(res.body[`comments`].length).toBe(2);
+
+		res = await request.get(`/api/${version}comments?random=garbage`);
+		expect(res.status).toBe(422);
+
+		done();
+	});
+
 	test(`Post new user with api ${version?version:"default"}`, async done => {
 
 		let res = await request.post(`/api/${version}users`).send({name: 'TEST NAME TEST TEST TEST'});
