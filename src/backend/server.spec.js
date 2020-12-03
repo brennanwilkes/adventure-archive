@@ -1,3 +1,7 @@
+//Brennan Wilkes
+//Test SPEC file. Not yet documented
+
+
 const { CONFIG, print, server } = require('./server')
 const { mongoose } = require('../database/connection')
 
@@ -87,8 +91,10 @@ for (let i = -1; i < CONFIG.api.length; i++) {
 			res = await request.get(`/api/${version}${endpoint}s/${idParams[endpoint]}`)
 			expect(res.status >= 200 && res.status <= 299).toBe(true)
 
-			res = await request.post(`/api/${version}${endpoint}s`)
-			expect(res.status).not.toBe(404)
+			if(endpoint !== "thread"){
+				res = await request.post(`/api/${version}${endpoint}s`)
+				expect(res.status).not.toBe(404)
+			}
 
 			done()
 		})
@@ -306,7 +312,7 @@ for (let i = -1; i < CONFIG.api.length; i++) {
 		res = await request.post(`/api/${version}comments`).send({
 			user: 'TEST NAME TEST TEST TEST',
 			comment: 'This is a test comment',
-			threadId: idParams.thread
+			threadId: `${idParams.thread}`
 		})
 
 		expect(res.status === 201 || res.status === 200).toBeTruthy()

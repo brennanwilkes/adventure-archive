@@ -11,7 +11,6 @@ import "./advancedSearchButton.css";
 /**
 	Auto detailed search button
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class AdvancedSearchButton extends React.Component {
@@ -38,9 +37,13 @@ class AdvancedSearchButton extends React.Component {
 	}
 }
 
+/**
+ * Props may have an expand callback,
+ * and must have a target string
+ */
 AdvancedSearchButton.propTypes = {
 	expandCallback: PropTypes.func,
-	target: PropTypes.string
+	target: PropTypes.string.isRequired
 };
 
 export default AdvancedSearchButton;

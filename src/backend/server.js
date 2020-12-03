@@ -1,3 +1,6 @@
+// Brennan Wilkes
+
+// Includes
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -6,19 +9,40 @@ const bodyParser = require("body-parser");
 const CONFIG = require(path.join(__dirname, "..", "..", "config", "backend.json"));
 exports.CONFIG = CONFIG;
 
-// Just a config switch for printing
+/**
+	Prints to stdout if verbose config mode is set
+	@param {string[]} content Content strings to print
+	@memberof backend
+*/
 const print = (...content) => {
 	if (CONFIG.verbose) console.log(...content);
 };
 exports.print = print;
 
-/*
-	Server backend object
+/**
+	Server abstration object
+	@class
 */
 exports.server = {
-	port: process.env.PORT || 8080,
+
+	/**
+		Port to use. Defaults to a "PORT" env variable if set (For heroku and other deployment methods),
+		otherwise uses the port set in the config file. Defaults to 8080.
+		@type {number}
+	*/
+	port: process.env.PORT || CONFIG.port || 8080,
+
+	/**
+		Express init object
+		@type {object}
+	*/
 	app: express(),
 
+	/**
+		Basic express setup.
+		Sets JSON encoding, url encoded bodies and static routing.
+		Sets up routes from API config
+	*/
 	init () {
 		// support json encoded bodies
 		this.app.use(express.json());
@@ -29,7 +53,7 @@ exports.server = {
 		// Static routing for public files
 		this.app.use("/", express.static(path.join(__dirname, "..", "..", "public-frontend")));
 
-		// api routing
+		// API routing
 		CONFIG.api.forEach((api, i) => {
 			const apiRouter = require(`./${api.path}`);
 			if (api.default) {
@@ -40,6 +64,10 @@ exports.server = {
 		});
 	},
 
+	/**
+		Starts the webserver.
+		This method should be run last, after init and routing.
+	*/
 	start () {
 		// 404 messages
 		this.app.get("*", (req, res) => {
@@ -56,6 +84,9 @@ exports.server = {
 		});
 	},
 
+	/**
+	 * Closes socket connection
+	 */
 	close () {
 		this.server.close();
 	}

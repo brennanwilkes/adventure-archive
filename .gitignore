@@ -105,3 +105,4 @@ dist
 
 public-frontend/bundle.js*
 public-frontend/bundle.js.map
+documentation/*

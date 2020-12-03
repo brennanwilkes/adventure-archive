@@ -7,11 +7,22 @@ import "../bootstrap-import.js";
 
 import Comment from "./comment.js";
 
+/**
+ * Main display container for comments
+ * @class
+ * @extends React.Component
+ */
 class Display extends React.Component {
+	/**
+	 * componentDidMount - Updates margin with new height information
+	 */
 	componentDidMount () {
 		$("#display").css("marginTop", "7.5%");
 	}
 
+	/**
+	 * renders a list of comments
+	 */
 	render () {
 		return <>
 			<article id="display" className="container-fluid px-0">{
@@ -25,13 +36,15 @@ class Display extends React.Component {
 	}
 }
 
+/**
+ * Props must contain a comments array of comment components,
+ * and view thread, advanced search toggle, and query callbacks
+ */
 Display.propTypes = {
-
 	comments: PropTypes.arrayOf(PropTypes.Comment).isRequired,
 	viewThreadCallback: PropTypes.func.isRequired,
 	advancedSearchToggleCallback: PropTypes.func.isRequired,
 	queryCommentsCallback: PropTypes.func.isRequired
-
 };
 
 export default Display;

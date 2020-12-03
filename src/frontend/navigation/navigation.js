@@ -11,9 +11,8 @@ import Search from "../searchPanel/search/search.js";
 import LoadingIcon from "./loadingIcon/loadingIcon.js";
 
 /**
-	Main navigation component for the menu
+	Main navigation component
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class Navigation extends React.Component {
@@ -52,6 +51,11 @@ class Navigation extends React.Component {
 	}
 }
 
+/**
+ * Props main contain an advanced search toggle callback,
+ * a search and advanced search callback, a user callback,
+ * and a user information object
+ */
 Navigation.propTypes = {
 	advancedSearchToggleCallback: PropTypes.func,
 	searchCallback: PropTypes.func,

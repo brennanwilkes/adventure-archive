@@ -12,13 +12,12 @@ import FloatingLabel from "../../floatingLabel/FloatingLabel.js";
 /**
 	A self controlling, auto additonal input controller
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class MultiInput extends React.Component {
 	/**
 		Initializes state
-		@param {any[]} Must contain an identifier and on change callback
+		@param {any[]} props
 	*/
 	constructor (props) {
 		super(props);
@@ -91,6 +90,9 @@ class MultiInput extends React.Component {
 	}
 }
 
+/**
+ * Props may contain a callback function, identifier, and label
+ */
 MultiInput.propTypes = {
 	callback: PropTypes.func,
 	identifier: PropTypes.string,

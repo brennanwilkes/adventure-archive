@@ -9,9 +9,8 @@ import MultiInput from "./multiInput/multiInput.js";
 import RangeSlider from "./rangeSlider/rangeSlider.js";
 
 /**
-	Collapsable advanced search pannel with all the parameters required to search for drinks.
+	Collapsable advanced search pannel with all the parameters required to search for comments.
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class AdvancedSearchPannel extends React.Component {
@@ -38,9 +37,10 @@ class AdvancedSearchPannel extends React.Component {
 
 	/**
 		Parses and manipulates input values before providing them to the given onchange callback
-		@param {object} event Sneakilly can be a index to pop from the search array
+		@param {object} event Event from a button click. However if called manually, may contain pop information about a multi input
 	*/
 	updateSubmit (event) {
+		// Get multi input values
 		const query = {};
 		["querySearch", "countrySearch", "subforumSearch"].forEach((search, i) => {
 			query[search] = $(`.${search}`).toArray().map(elem => encodeURIComponent(elem.value));
@@ -49,9 +49,13 @@ class AdvancedSearchPannel extends React.Component {
 			}
 		});
 
+		// Apply limit
 		query.limit = [Math.max($("#limitSlider")[0].value * 5, 1)];
+
+		// Set group by
 		query.groupByThread = [true];
 
+		// Query
 		this.props.callback(query);
 	}
 
@@ -112,6 +116,9 @@ class AdvancedSearchPannel extends React.Component {
 	}
 }
 
+/**
+ * Props may contain a callback and id
+ */
 AdvancedSearchPannel.propTypes = {
 	callback: PropTypes.func,
 	id: PropTypes.string

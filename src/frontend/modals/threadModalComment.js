@@ -7,14 +7,25 @@ import "../bootstrap-import.js";
 import axios from "axios";
 import unescape from "unescape";
 
+/**
+ * A comment in a thread model
+ * @class
+ * @extends React.Component
+ */
 class ThreadModalComment extends React.Component {
+	/**
+	 * constructor - Initializes state data
+	 * @param  {type} props
+	 */
 	constructor (props) {
 		super(props);
-
 		this.state = this.props.data;
 		this.state.userName = "";
 	}
 
+	/**
+	 * componentDidMount - Gets USER data and sets mounted flag
+	 */
 	componentDidMount () {
 		this._ismounted = true;
 
@@ -28,10 +39,16 @@ class ThreadModalComment extends React.Component {
 		});
 	}
 
+	/**
+	 * componentWillUnmount - Unsets mounted flag
+	 */
 	componentWillUnmount () {
 		this._ismounted = false;
 	}
 
+	/**
+	 * renders a comment data with styling
+	 */
 	render () {
 		return (
 			<section>
@@ -48,6 +65,9 @@ class ThreadModalComment extends React.Component {
 	}
 }
 
+/**
+ * Props must include a data object
+ */
 ThreadModalComment.propTypes = {
 	data: PropTypes.object.isRequired
 };

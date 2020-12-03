@@ -10,7 +10,16 @@ import "./threadModal.css";
 import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 import ThreadModalComment from "./threadModalComment";
 
+/**
+ * A modal displaying an entire thread
+ * @class
+ * @extends React.Component
+ */
 class ThreadModal extends React.Component {
+	/**
+	 * constructor - Initializes state and binds methods
+	 * @param  {type} props
+	 */
 	constructor (props) {
 		super(props);
 		this.post = this.post.bind(this);
@@ -22,6 +31,9 @@ class ThreadModal extends React.Component {
 		};
 	}
 
+	/**
+	 * resetBtn - Resets post button to defaults
+	 */
 	resetBtn () {
 		this.setState({
 			btnColour: "mariana",
@@ -29,10 +41,16 @@ class ThreadModal extends React.Component {
 		});
 	}
 
+	/**
+	 * Post comment callback
+	 * @param  {type} event
+	 */
 	post (event) {
 		event.preventDefault();
 
+		// basic UI validation
 		if (this.props.user !== undefined && this.props.user.name && this.props.user.name.length > 0) {
+			// Find POST route and trigger it
 			this.props.comments[0].links.forEach((link, i) => {
 				if (link.rel === "Post new comment" && link.action === "POST") {
 					axios.post(`${link.href}`, {
@@ -40,6 +58,7 @@ class ThreadModal extends React.Component {
 						comment: $("#newComment").val(),
 						threadId: String(this.props.comments[0].threadId)
 					}).then(res => {
+						// Update button with feedback
 						this.setState({
 							btnColour: "success",
 							btnText: "Success"
@@ -47,6 +66,7 @@ class ThreadModal extends React.Component {
 						setTimeout(this.resetBtn, 2000);
 						this.props.updateCallback();
 					}).catch(() => {
+						// Update button with failure
 						this.setState({
 							btnColour: "danger",
 							btnText: "Error Posting"
@@ -56,6 +76,7 @@ class ThreadModal extends React.Component {
 				}
 			});
 		} else {
+			// Update button with failure
 			this.setState({
 				btnColour: "danger",
 				btnText: "Invalid Username"
@@ -64,7 +85,13 @@ class ThreadModal extends React.Component {
 		}
 	}
 
+	/**
+	 * render - Renders out the modal.
+	 * Header contains the thread title, body the
+	 * comments, and footer the post form
+	 */
 	render () {
+		// Ensure thread comments are in correct order
 		let ordered = new Array(this.props.comments.length);
 		const unordered = [];
 		this.props.comments.forEach((c, i) => {
@@ -74,7 +101,6 @@ class ThreadModal extends React.Component {
 				unordered.push(c);
 			}
 		});
-
 		ordered = [...ordered, ...unordered].filter(e => e !== undefined);
 
 		return <>
@@ -113,6 +139,9 @@ class ThreadModal extends React.Component {
 	}
 }
 
+/**
+ * Props must contain user object, comments array, title, and update callback.
+ */
 ThreadModal.propTypes = {
 	user: PropTypes.object.isRequired,
 	comments: PropTypes.array.isRequired,

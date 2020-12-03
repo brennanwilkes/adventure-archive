@@ -8,6 +8,11 @@ import { ImCog } from "react-icons/im";
 
 import "./loadingIcon.css";
 
+/**
+ * A small cog loading icon
+ * @class
+ * @extends React.Component
+ */
 class LoadingIcon extends React.Component {
 	render () {
 		return <>
@@ -18,6 +23,9 @@ class LoadingIcon extends React.Component {
 	}
 }
 
+/**
+ * Props must contain a size
+ */
 LoadingIcon.propTypes = {
 	size: PropTypes.number.isRequired
 };

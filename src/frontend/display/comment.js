@@ -9,7 +9,16 @@ import unescape from "unescape";
 
 import "./comment.css";
 
+/**
+ * Comment to be displayed in the main results display section
+ * @class
+ * @extends React.Component
+ */
 class Comment extends React.Component {
+	/**
+	 * constructor - Initializes state
+	 * @param  {type} props description
+	 */
 	constructor (props) {
 		super(props);
 
@@ -18,9 +27,15 @@ class Comment extends React.Component {
 		this.state.userData = undefined;
 	}
 
+	/**
+	 * componentDidMount - Updates _ismounted flag.
+	 * Retrieves required additional thread and user information from API
+	 */
 	componentDidMount () {
+		// Update flag
 		this._ismounted = true;
 
+		// Request additional detailed information
 		this.state.links.forEach((link, i) => {
 			if (link.rel === "thread" && link.action === "GET") {
 				axios.get(link.href)
@@ -36,10 +51,18 @@ class Comment extends React.Component {
 		});
 	}
 
+	/**
+	 * componentWillUnmount - Updates _ismounted flag
+	 */
 	componentWillUnmount () {
 		this._ismounted = false;
 	}
 
+	/**
+	 * renders a comment's data with custom styling.
+	 * Connections required callback methods to onclick
+	 * events.
+	 */
 	render () {
 		return <>
 			<section className="comment justify-content-center row mb-5 mt-2">
@@ -100,6 +123,9 @@ class Comment extends React.Component {
 	}
 }
 
+/**
+ * Props must contain a data object, and query comment and view thread callbacks
+ */
 Comment.propTypes = {
 	data: PropTypes.object.isRequired,
 	queryCommentsCallback: PropTypes.func.isRequired,

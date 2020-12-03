@@ -1,3 +1,5 @@
+//Brennan Wilkes
+
 const { connection, mongoose } = require('./connection')
 
 test('Verifies mongo connection', () => {

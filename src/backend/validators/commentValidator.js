@@ -1,9 +1,16 @@
+// Brennan Wilkes
+
+// Imports
 const { query, body } = require("express-validator");
 const { link, getReqPath } = require("../controllers/generalController");
 const { validationErrorHandlerFactory, forceArraySanitizer } = require("./generalValidator");
 const Thread = require("../../database/models/thread.js");
 const User = require("../../database/models/user.js");
 
+/**
+ * Validates GET Requests for /comments
+ * Checks validity of optional query parameters and forces them to be arrays
+ */
 exports.getCommentValidator = [
 	query("limit").if(query("limit").exists()).trim().isInt(),
 	validationErrorHandlerFactory(req => [
@@ -40,6 +47,16 @@ exports.getCommentValidator = [
 	])
 ];
 
+/**
+ * Validation for POST requests to /comments
+ * Validations required "user" parameter.
+ * User must be string data, ascii characters only, and have a length of atleast one.
+ * User must exist in the database
+ *
+ * Comment parameter must be an ascii string with a minimum length of atleast one.
+ *
+ * ThreadID must be a string of length atleast one, and exist in the database
+ */
 exports.postCommentValidator = [
 	body("user")
 		.isString()
@@ -48,7 +65,7 @@ exports.postCommentValidator = [
 		.isLength({ min: 1 })
 		.escape()
 		.custom((user, { req }) => User.findOne({ name: user }).limit(1).then(result => {
-			if (!result || result.length < 0) {
+			if (!result || result.length < 1) {
 				return Promise.reject(new Error("User does not exist"));
 			}
 			return Promise.resolve();
@@ -65,8 +82,9 @@ exports.postCommentValidator = [
 		.isString()
 		.trim()
 		.isLength({ min: 1 })
-		.custom((id, { req }) => Thread.findOne({ _id: id }).limit(1).then(result => {
-			if (!result || result.length < 0) {
+		.escape()
+		.custom((threadId, { req }) => Thread.findOne({ _id: threadId }).limit(1).then(result => {
+			if (!result || result.length < 1) {
 				return Promise.reject(new Error("Thread does not exist"));
 			}
 			return Promise.resolve();

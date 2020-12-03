@@ -1,3 +1,5 @@
+// Brennan Wilkes
+
 const readline = require("readline");
 
 console.log("connecting to mongo");
