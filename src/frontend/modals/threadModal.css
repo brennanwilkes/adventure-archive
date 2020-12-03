@@ -1,0 +1,29 @@
+.modal h5{
+	font-family: 'Muli', sans-serif;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+#threadModal .modal-dialog{
+	width: 90%;
+	min-width: 90%;
+}
+
+#threadModal .modal-footer{
+	justify-content: center !important;
+	border: 0;
+}
+
+.threadDetailComment{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+}
+.threadDetailComment > div{
+	display: flex;
+	flex-direction: column;
+	min-width: 15vw;
+	max-width: 15vw;
+	width: 15vw;
+}

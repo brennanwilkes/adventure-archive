@@ -5,6 +5,7 @@ import axios from "axios";
 import Navigation from "./navigation/navigation.js";
 import Display from "./display/display.js";
 import LoginModal from "./modals/loginModal.js";
+import ThreadModal from "./modals/threadModal.js";
 import "./index.css";
 
 const API = "api/v0.0.1/";
@@ -29,13 +30,15 @@ class App extends React.Component {
 		this.getUser = this.getUser.bind(this);
 		this.queueGetComments = this.queueGetComments.bind(this);
 		this.viewThread = this.viewThread.bind(this);
+		this.update = this.update.bind(this);
 
 		this.state = {
 			comments: [],
 			threadTitle: undefined,
 			user: undefined,
 			nextQuery: undefined,
-			queryLock: false
+			queryLock: false,
+			lastQuery: undefined
 		}
 
 	}
@@ -63,7 +66,8 @@ class App extends React.Component {
 
 		axios.get(`${window.location.href}${API}comments?${query}`).then(res => {
 			this.setState({
-				comments: res.data.comments
+				comments: res.data.comments,
+				lastQuery: query
 			});
 
 			if(this.state.nextQuery){
@@ -89,11 +93,14 @@ class App extends React.Component {
 	}
 
 	getUser(user = ""){
-		axios.get(`${window.location.href}${API}users?name=${user}`).then(res => {
+		if(user.length < 1){
+			return;
+		}
+		axios.post(`${window.location.href}${API}users`,{name:user}).then(res => {
 			this.setState({
 				user: res.data.users[0]
 			});
-		}).catch(error => {});
+		}).catch(error => {console.error(error)});
 	}
 
 	/**
@@ -149,7 +156,13 @@ class App extends React.Component {
 	viewThread(thread){
 		this.queueGetComments(`thread=${encodeURIComponent(thread._id)}`);
 		this.setState({threadTitle:thread.title});
-		console.log(thread);
+		$('#threadModal').modal();
+	}
+
+	update(event){
+		if(this.state.lastQuery){
+			this.queueGetComments(this.state.lastQuery);
+		}
 	}
 
 	render() {
@@ -167,6 +180,11 @@ class App extends React.Component {
 				advancedSearchToggleCallback={this.advancedSearchToggle}
 				viewThreadCallback={this.viewThread} />
 			<LoginModal loginCallback={name => this.getUser(name)} />
+			<ThreadModal
+				title={this.state.threadTitle}
+				user={this.state.user}
+				comments={this.state.comments}
+				updateCallback={this.update} />
 		</>;
 	}
 }

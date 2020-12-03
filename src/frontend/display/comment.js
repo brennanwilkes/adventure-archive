@@ -4,6 +4,7 @@
 import React from "react";
 import "../bootstrap-import.js";
 import axios from "axios";
+import unescape from "unescape";
 
 import "./comment.css";
 
@@ -22,13 +23,13 @@ class Comment extends React.Component{
 
 		this.state.links.forEach((link, i) => {
 			if(link.rel === "thread" && link.action === "GET"){
-				axios.get(`http://${link.href}`)
+				axios.get(link.href)
 					.then(threadRes => {
 						if(this._ismounted) this.setState({threadData:threadRes.data.threads[0]})
 					}).catch(error=>{console.error(error)});
 			}
 			else if(link.rel === "user" && link.action === "GET"){
-				axios.get(`http://${link.href}`)
+				axios.get(link.href)
 					.then(userRes => {
 						if(this._ismounted) this.setState({userData:userRes.data.users[0]})
 					}).catch(error=>{});
@@ -62,12 +63,12 @@ class Comment extends React.Component{
 								}
 							}}
 							className="title text-jetsam h6 mb-0">{
-								(this.state.threadData ? this.state.threadData.title: "")
+								(this.state.threadData ? unescape(this.state.threadData.title): "")
 						}</div>
 					</div>
-					<p>
-						{this.state.content}
-					</p>
+					<p>{
+						unescape(this.state.content)
+					}</p>
 					<div className="floatingFooter mt-2 ml-2 px-2 py-1">
 						<div
 							onClick={(event)=>{
