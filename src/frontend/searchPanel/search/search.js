@@ -12,7 +12,6 @@ import AdvancedSearchButton from "../advancedSearchButton/advancedSearchButton.j
 /**
 	Self contained and controlling search bar
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class Search extends React.Component {
@@ -39,6 +38,10 @@ class Search extends React.Component {
 	}
 }
 
+/**
+ * Props may contain an advanced search target, advanced search
+ * callback, and regular callback
+ */
 Search.propTypes = {
 	advancedSearch: PropTypes.string,
 	advancedSearchCallback: PropTypes.func,

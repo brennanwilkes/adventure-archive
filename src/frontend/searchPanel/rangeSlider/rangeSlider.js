@@ -10,13 +10,12 @@ import "./rangeSlider.css";
 /**
 	A custom controlled slider input
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class RangeSlider extends React.Component {
 	/**
 		Initializes state
-		@param {any[]} props Should have a default value, label , id, scale and output multipler
+		@param {any[]} props
 	*/
 	constructor (props) {
 		super(props);
@@ -41,17 +40,27 @@ class RangeSlider extends React.Component {
 					name="range"
 					value={this.state.val}
 					onChange={(event) => {
+						// Round value based on scale
 						const rounded = Math.round(event.target.value / this.props.scale) * this.props.scale;
+
+						// Grab previous value
 						const prev = this.state.val;
+
+						// Record
 						this.setState({ val: rounded });
 
+						// Generate output value
 						let output = rounded * (this.props.outputMultipler ? this.props.outputMultipler : 1);
 
+						// Bounded by 1
 						output = Math.max(1, output);
 
+						// Quick set values
+						// This is required to avoid flickering as setState and update are async
 						$(`#${this.props.id}-output`)[0].value = output;
 						$(`#${this.props.id}`)[0].value = rounded;
 
+						// Manual update callback
 						if (rounded !== prev) {
 							this.props.onChange();
 						}
@@ -68,6 +77,10 @@ class RangeSlider extends React.Component {
 	}
 }
 
+/**
+ * Props may contain a deafult, label, id, scale,
+ * output multiplier, and on change callback
+ */
 RangeSlider.propTypes = {
 	default: PropTypes.string,
 	label: PropTypes.string,

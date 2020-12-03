@@ -8,7 +8,16 @@ import "../bootstrap-import.js";
 import "./loginModal.css";
 import FloatingLabel from "../floatingLabel/FloatingLabel.js";
 
+/**
+ * A simple modal for a login panel
+ * @class
+ * @extends React.Component
+ */
 class LoginModal extends React.Component {
+	/**
+	 * render - Renders a basic login modal with some formatting and a
+	 * single floating label text input with submit button.
+	 */
 	render () {
 		return <>
 			<article className="modal bg-dark fade" id="LoginModal" tabIndex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
@@ -42,6 +51,9 @@ class LoginModal extends React.Component {
 	}
 }
 
+/**
+ * Props must contain a login callback
+ */
 LoginModal.propTypes = {
 	loginCallback: PropTypes.func
 };

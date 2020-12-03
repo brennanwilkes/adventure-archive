@@ -11,13 +11,12 @@ import "./FloatingLabel.css";
 	A floating label input component.
 	Cleanly transitions an input placeholder to a upper left floated label
 	@class
-	@memberof frontend
 	@extends React.Component
 */
 class FloatingLabel extends React.Component {
 	/**
 		Initializes state and binds methods
-		@param {any[]} props Should contain any input classes, the input id, the label text, and optionally an onChange callback
+		@param {any[]} props
 		@constructor
 	*/
 	constructor (props) {
@@ -70,6 +69,10 @@ class FloatingLabel extends React.Component {
 	}
 }
 
+/**
+ * Props may contain a classname, a type, an id, an onChange
+ * callback method, and a label
+ */
 FloatingLabel.propTypes = {
 	className: PropTypes.string,
 	type: PropTypes.string,
