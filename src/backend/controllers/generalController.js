@@ -19,7 +19,7 @@ exports.link = link;
 
 const getReqPath = req => {
 	const url = req.baseUrl.split("/");
-	return `${req.protocol}://${req.headers.host}${url.slice(0,url.length-1).join("/")}`;
+	return `${url.slice(0,url.length-1).join("/")}`;
 }
 exports.getReqPath = getReqPath;
 
