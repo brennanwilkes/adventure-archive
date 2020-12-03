@@ -12,7 +12,7 @@ class LoginModal extends React.Component{
 
 	render(){
 		return <>
-			<div className="modal bg-dark fade" id="LoginModal" tabIndex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
+			<article className="modal bg-dark fade" id="LoginModal" tabIndex="-1" role="dialog" aria-labelledby="LoginModal" aria-hidden="true">
 				<div className="modal-dialog modal-dialog-centered" role="document">
 					<div className="modal-content">
 						<div className="modal-header">
@@ -31,13 +31,14 @@ class LoginModal extends React.Component{
 								type="button"
 								className="btn btn-mariana"
 								data-dismiss="modal"
+								aria-label="close login"
 								onClick={() => this.props.loginCallback($("#loginInput")[0].value)}>
 									Login
 								</button>
 						</div>
 					</div>
 				</div>
-			</div>
+			</article>
 		</>
 	}
 }

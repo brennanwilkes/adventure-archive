@@ -88,7 +88,7 @@ class ThreadModal extends React.Component{
 		ordered = [...ordered,...unordered].filter(e => e!==undefined);
 
 		return <>
-			<div className="modal bg-dark fade" id="threadModal" tabIndex="-1" role="dialog" aria-labelledby="threadModal" aria-hidden="true">
+			<article className="modal bg-dark fade" id="threadModal" tabIndex="-1" role="dialog" aria-labelledby="threadModal" aria-hidden="true">
 				<div className="modal-dialog modal-dialog-centered" role="document">
 					<div className="modal-content">
 						<div className="modal-header">
@@ -109,6 +109,7 @@ class ThreadModal extends React.Component{
 								<button
 									type="button"
 									id="postButton"
+									aria-label="post comment"
 									className={`btn btn-${this.state.btnColour} py-2`}
 									onClick={this.post}>{
 										this.state.btnText
@@ -117,7 +118,7 @@ class ThreadModal extends React.Component{
 						</div>
 					</div>
 				</div>
-			</div>
+			</article>
 		</>
 	}
 }

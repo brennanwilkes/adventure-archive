@@ -36,6 +36,7 @@ class RangeSlider extends React.Component{
 				<input
 					type="range"
 					className="form-control py-0"
+					aria-label={`Range slider - ${this.props.label}`}
 					id={this.props.id}
 					name="range"
 					value={this.state.val}
@@ -58,6 +59,7 @@ class RangeSlider extends React.Component{
 				}} />
 				<output
 					className="output-val"
+					aria-label="Current slider value"
 					id={`${this.props.id}-output`}
 					value={Math.max(1,this.state.val * (this.props.outputMultipler ? this.props.outputMultipler: 1))} >{
 						Math.max(1,this.state.val * (this.props.outputMultipler ? this.props.outputMultipler: 1))

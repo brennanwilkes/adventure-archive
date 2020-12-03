@@ -12,9 +12,9 @@ class LoadingIcon extends React.Component{
 
 	render() {
 		return <>
-			<button className="loadingIcon px-0 mx-0 text-sandy btn btn-lg">
+			<div className="loadingIcon px-0 mx-0 text-sandy btn btn-lg">
 				<ImCog size={this.props.size} />
-			</button>
+			</div>
 		</>
 	}
 }
