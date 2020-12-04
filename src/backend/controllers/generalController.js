@@ -148,13 +148,13 @@ exports.getDoc = (req, res, Model, formatter) => {
 		.then(results => {
 			if (results.length === 0 || results === null) {
 				res.status(404);
-				res.send(`Resource ${req.params.id} not found`);
+				res.send({ errors: [{ msg: `Resource not found`, value: req.params.id }] });
 			}
 			res.send(formatter(results, getReqPath(req)));
 		})
 		.catch(() => {
 			res.status(404);
-			res.send(`Resource ${req.params.id} not found`);
+			res.send({ errors: [{ msg: `Resource not found`, value: req.params.id }] });
 		});
 };
 
