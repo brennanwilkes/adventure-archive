@@ -76,7 +76,7 @@ class Comment extends React.Component {
 									}
 								}}
 								className="country col-md-5 text-sandy h3 mb-0">{
-									(this.state.threadData ? this.state.threadData.country : "")
+									(this.state.threadData ? unescape(this.state.threadData.country) : "")
 								}</div>
 							<div className="text-sandy col-md-1 h3 mb-0 mx-2 spacer">|</div>
 							<div
